@@ -382,10 +382,92 @@ form button[type="submit"] {
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 920px) {
   .form-row {
     flex-direction: column;
     gap: 1rem;
+  }
+  .navbar-actions {
+    gap: .25rem;
+    flex-grow: 0;
+  }
+  
+  .user-menu-trigger,
+  .theme-toggle,
+  .github-logo {
+    text-align: center;
+    padding: 0.75rem;
+  }
+  
+  .upload-button {
+    display: none !important;
+  }
+
+  .mobile-upload-button {
+    display: block !important;
+  }
+
+  .main-container {
+    padding: 1rem;
+    padding-bottom: 5rem;
+  }
+
+  .responses-container {
+    flex-direction: column !important;
+    gap: 1rem;
+    padding-top: 1rem;
+    justify-content: flex-start !important;
+  }
+
+  .free-class {
+    width: 100% !important;
+    margin: 0;
+    flex-grow: 0 !important;
+  }
+
+  .paper-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .view-button {
+    flex: none;
+  }
+
+  .modal-overlay {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .modal-content {
+    max-width: none;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    padding: 1rem;
+    padding-top: 3.5rem;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-content-inner {
+    height: auto;
+    min-height: 15vh;
+  }
+
+  form input[type="text"],
+  form input[type="file"],
+  form input[type="email"],
+  form button[type="submit"] {
+    padding: 0.75rem;
+  }
+  .footer {
+    margin-bottom: 5rem;
+    padding: 0.75rem;
+    font-size: 0.85rem;
   }
 }
 
@@ -673,7 +755,7 @@ form button[type="submit"]:active {
   background: var(--button-bg);
   color: var(--bg-color);
   border: none;
-  padding: 1rem 2rem;
+  padding: 1rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
   font-size: 0.9rem;
@@ -682,8 +764,12 @@ form button[type="submit"]:active {
   transition: all 0.2s ease;
   z-index: 1000;
   font-family: "Geist", sans-serif;
-  max-width: calc(100vw - 2rem);
+  width: calc(100vw - 2rem);
+  max-width: 400px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .mobile-upload-button:hover {
@@ -696,87 +782,6 @@ form button[type="submit"]:active {
   .modal-content {
     max-width: 600px;
     width: 85%;
-  }
-}
-
-@media (max-width: 768px) {
-
-  .navbar-actions {
-    gap: .25rem;
-    flex-grow: 0;
-  }
-  
-  .user-menu-trigger,
-  .theme-toggle,
-  .github-logo {
-    text-align: center;
-    padding: 0.75rem;
-  }
-  
-  .upload-button {
-    display: none !important;
-  }
-
-  .mobile-upload-button {
-    display: block !important;
-  }
-
-  .main-container {
-    padding: 1rem;
-    padding-bottom: 5rem;
-  }
-
-  .responses-container {
-    flex-direction: column !important;
-    gap: 1rem;
-    padding-top: 1rem;
-    justify-content: flex-start !important;
-  }
-
-  .free-class {
-    width: 100% !important;
-    margin: 0;
-    flex-grow: 0 !important;
-  }
-
-  .paper-actions {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .view-button {
-    flex: none;
-  }
-
-  .modal-overlay {
-    padding: 0;
-    align-items: stretch;
-    justify-content: stretch;
-  }
-
-  .modal-content {
-    max-width: none;
-    width: 100%;
-    height: 100%;
-    max-height: none;
-    padding: 1rem;
-    padding-top: 3.5rem;
-    margin: 0;
-    border-radius: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .modal-content-inner {
-    height: auto;
-    min-height: 15vh;
-  }
-
-  form input[type="text"],
-  form input[type="file"],
-  form input[type="email"],
-  form button[type="submit"] {
-    padding: 0.75rem;
   }
 }
 
@@ -871,12 +876,4 @@ form button[type="submit"]:active {
 .footer p {
   margin: 0;
   font-family: "Geist", sans-serif;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    margin-bottom: 5rem;
-    padding: 0.75rem;
-    font-size: 0.85rem;
-  }
 }
