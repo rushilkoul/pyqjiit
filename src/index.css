@@ -711,10 +711,6 @@ form button[type="submit"]:active {
     text-align: center;
     padding: 0.75rem;
   }
-
-  .user-dropdown {
-    display: none !important;
-  }
   
   .upload-button {
     display: none !important;
