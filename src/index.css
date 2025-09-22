@@ -94,6 +94,73 @@ pre {
   display: flex;
   gap: 1rem;
   align-items: center;
+  justify-content: flex-end;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-menu-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--select-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+}
+
+.user-menu-trigger:hover {
+  border-color: var(--hover-border-color);
+  background: var(--option-hover-bg);
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--select-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dark-theme .user-dropdown {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.user-info {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-email {
+  font-size: 0.875rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.dropdown-signout {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+.dropdown-signout:hover {
+  background: var(--option-hover-bg);
 }
 
 .main-container {
@@ -302,6 +369,25 @@ form button[type="submit"] {
   transition: background-color 0.2s ease;
 }
 
+.form-row {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.form-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
 form button[type="submit"]:hover {
   background-color: var(--button-hover);
 }
@@ -350,7 +436,6 @@ form button[type="submit"]:active {
 
 .free-class h3 {
   font-size: 1.25rem;
-  margin-bottom: 0.75rem;
   color: var(--text-color);
 }
 
@@ -385,6 +470,227 @@ form button[type="submit"]:active {
   background: var(--button-hover);
 }
 
+.paper-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+.paper-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.paper-badges {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: "Inconsolata", monospace;
+}
+
+.badge.subject {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #3b82f6;
+}
+
+.dark-theme .badge.subject {
+  background: #1e3a8a;
+  color: #bfdbfe;
+  border: 1px solid #60a5fa;
+}
+
+.badge.verified {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.dark-theme .badge.verified {
+  background: #14532d;
+  color: #bbf7d0;
+}
+
+.badge.flagged {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.dark-theme .badge.flagged {
+  background: #7f1d1d;
+  color: #fecaca;
+}
+
+.paper-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.paper-details p {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.paper-details strong {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.paper-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.view-button {
+  background: var(--button-bg);
+  color: var(--bg-color) !important;
+  text-decoration: none !important;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.view-button:hover {
+  background: var(--button-hover);
+  transform: none;
+}
+
+.delete-button {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.delete-button:hover {
+  background: #b91c1c;
+}
+
+.file-info {
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  background: var(--select-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.875rem;
+}
+
+.file-info p {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-color);
+}
+
+.file-info ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+
+.file-info li {
+  margin: 0.25rem 0;
+  color: var(--text-color);
+}
+
+.conversion-progress {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #e0f2fe;
+  border: 1px solid #0288d1;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.dark-theme .conversion-progress {
+  background: #0d47a1;
+  border-color: #42a5f5;
+  color: #e3f2fd;
+}
+
+.field-locked {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.dark-theme .field-locked {
+  color: #9ca3af;
+}
+
+.mobile-signout-button {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  font-family: "Geist", sans-serif;
+}
+
+.mobile-signout-button:hover {
+  background: var(--button-hover);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-upload-button {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--box-shadow-color);
+  transition: all 0.2s ease;
+  z-index: 1000;
+  font-family: "Geist", sans-serif;
+  max-width: calc(100vw - 2rem);
+  text-align: center;
+}
+
+.mobile-upload-button:hover {
+  background: var(--button-hover);
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 1024px) {
   .modal-content {
     max-width: 600px;
@@ -393,32 +699,56 @@ form button[type="submit"]:active {
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    padding: 1rem;
-  }
 
   .navbar-actions {
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
+    gap: .25rem;
+    flex-grow: 0;
   }
-
-  .session-manager {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.25rem;
-  }
-
-  .signout-button,
-  .upload-button,
+  
+  .user-menu-trigger,
   .theme-toggle,
   .github-logo {
-    width: 100%;
     text-align: center;
     padding: 0.75rem;
+  }
+
+  .user-dropdown {
+    display: none !important;
+  }
+  
+  .upload-button {
+    display: none !important;
+  }
+
+  .mobile-upload-button {
+    display: block !important;
+  }
+
+  .main-container {
+    padding: 1rem;
+    padding-bottom: 5rem;
+  }
+
+  .responses-container {
+    flex-direction: column !important;
+    gap: 1rem;
+    padding-top: 1rem;
+    justify-content: flex-start !important;
+  }
+
+  .free-class {
+    width: 100% !important;
+    margin: 0;
+    flex-grow: 0 !important;
+  }
+
+  .paper-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .view-button {
+    flex: none;
   }
 
   .modal-overlay {
@@ -455,7 +785,33 @@ form button[type="submit"]:active {
 
 @media (max-width: 525px) {
   .free-class {
-    width: 100%;
+    width: 100% !important;
+    padding: 1rem;
+    flex-grow: 0 !important;
+  }
+  
+  .responses-container {
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+  }
+  
+  .paper-header h3 {
+    font-size: 1.1rem;
+    line-height: 1.3;
+  }
+  
+  .paper-badges {
+    margin-top: 0.5rem;
+  }
+  
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .paper-details p {
+    font-size: 0.8rem;
   }
   
   .modal-overlay {
@@ -480,5 +836,26 @@ form button[type="submit"]:active {
 
   .modal-content-inner {
     min-height: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .responses-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  .free-class {
+    width: 100% !important;
+    flex: none !important;
+    margin-bottom: 1rem;
+  }
+  
+  .main-container {
+    padding: 0.5rem;
+    padding-bottom: 5rem;
   }
 }

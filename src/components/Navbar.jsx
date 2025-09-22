@@ -1,21 +1,62 @@
-import React from 'react';
-import { FaGithub, FaSun, FaMoon } from 'react-icons/fa';
+import React, { useState, useEffect, useRef } from 'react';
+import { FaGithub, FaSun, FaMoon, FaUser, FaChevronDown } from 'react-icons/fa';
 import { useTheme } from '../themecontext';
 
 function Navbar({ user, onSignOut }) {
   const githubLink = "https://github.com/rushilkoul/pyqjiit";
   const { theme, toggleTheme } = useTheme();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
+
+  const toggleUserMenu = () => {
+    setUserMenuOpen(!userMenuOpen);
+  };
+
+  const handleSignOut = () => {
+    setUserMenuOpen(false);
+    onSignOut();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    if (userMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [userMenuOpen]);
 
   return (
     <nav className="navbar">
         <h1>PYQJIIT</h1>
         <div className="navbar-actions">
           {user && (
-            <div className="session-manager">
-              <span>Signed in as: {user.email}</span>
-              <button onClick={onSignOut} className="signout-button">
-                Sign Out
+            <div className="user-menu" ref={userMenuRef}>
+              <button 
+                onClick={toggleUserMenu} 
+                className="user-menu-trigger"
+                aria-expanded={userMenuOpen}
+              >
+                <FaUser size={16} />
+                <FaChevronDown size={12} />
               </button>
+              {userMenuOpen && (
+                <div className="user-dropdown">
+                  <div className="user-info">
+                    <span className="user-email">{user.email}</span>
+                  </div>
+                  <button onClick={handleSignOut} className="dropdown-signout">
+                    Sign Out
+                  </button>
+                </div>
+              )}
             </div>
           )}
           <button onClick={toggleTheme} className="theme-toggle">

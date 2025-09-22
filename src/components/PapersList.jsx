@@ -68,28 +68,66 @@ export default function PapersList({ user }) {
       ) : (
         <ul className="responses-container">
           {papers.map((paper) => {
-            const { id, filename, file_key, uploaded_by, uploaded_by_id } = paper;
+            const { 
+              id, 
+              filename, 
+              file_key, 
+              subject,
+              year,
+              semester,
+              batch,
+              uploaded_by, 
+              uploaded_by_id,
+              verified,
+              flagged,
+              inserted_at
+            } = paper;
+            
             const { data: publicUrlData } = supabase
               .storage
               .from('papers')
               .getPublicUrl(file_key);
 
+            const uploadDate = new Date(inserted_at).toLocaleDateString();
+
             return (
               <li key={id} className="free-class">
-                <div>
-                  <h3>{filename}</h3>
-                  <a
-                    href={publicUrlData.publicUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    View Paper
-                  </a>
-                  <p>Uploaded by: {uploaded_by || uploaded_by_id}</p>
+                <div className="paper-info">
+                  <div className="paper-header">
+                    <h3>{filename}</h3>
+                    <div className="paper-badges">
+                      {subject && <span className="badge subject">{subject}</span>}
+                      {verified && <span className="badge verified">✓ Verified</span>}
+                      {flagged && <span className="badge flagged">⚠ Flagged</span>}
+                    </div>
+                  </div>
+                  
+                  <div className="paper-details">
+                    {year && semester && <p><strong>{year} - {semester}</strong></p>}
+                    {year && !semester && <p><strong>{year}</strong></p>}
+                    {batch && <p><strong>Batch(es):</strong> {batch}</p>}
+                    <p><strong>Uploaded:</strong> {uploadDate} by {uploaded_by || uploaded_by_id}</p>
+                  </div>
+                  
+                  <div className="paper-actions">
+                    <a
+                      href={publicUrlData.publicUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="view-button"
+                    >
+                      View Paper
+                    </a>
+                    {user && user.id === uploaded_by_id && (
+                      <button 
+                        onClick={() => handleDelete(id, uploaded_by_id)}
+                        className="delete-button"
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </div>
-                {user && user.id === uploaded_by_id && (
-                  <button onClick={() => handleDelete(id, uploaded_by_id)}>Delete</button>
-                )}
               </li>
             );
           })}

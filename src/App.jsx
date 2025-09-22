@@ -49,6 +49,15 @@ export default function App() {
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         <UploadForm isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} user={user} />
       </main>
+      
+      {!isUploadModalOpen && (
+        <button
+          onClick={handleUploadButtonClick}
+          className="mobile-upload-button"
+        >
+          {user ? 'Upload Question Paper' : 'Sign in to Upload'}
+        </button>
+      )}
     </div>
   );
 }
