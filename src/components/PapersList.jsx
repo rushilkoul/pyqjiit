@@ -1,33 +1,100 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 
-export default function PapersList() {
+export default function PapersList({ user }) {
   const [papers, setPapers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPapers = async () => {
-      const { data } = await supabase.from('papers').select('*');
-      setPapers(data || []);
-    };
     fetchPapers();
+
+    const channel = supabase
+      .channel('papers_changes')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'papers' },
+        () => fetchPapers()
+      )
+      .subscribe();
+
+    return () => supabase.removeChannel(channel);
   }, []);
 
-  const getPublicUrl = (fileKey) => {
-    const { data } = supabase.storage.from('papers').getPublicUrl(fileKey);
-    return data.publicUrl;
+  const fetchPapers = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('papers')
+        .select('*')
+        .order('inserted_at', { ascending: false });
+      if (fetchError) throw fetchError;
+      setPapers(data);
+    } catch (err) {
+      console.error('Error fetching papers:', err.message);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  const handleDelete = async (id, ownerId) => {
+    if (!user) return alert('You must be logged in to delete papers.');
+    if (user.id !== ownerId) return alert('You can only delete your own papers.');
+    if (!window.confirm('Are you sure you want to delete this paper?')) return;
+
+    try {
+      const { error: deleteError } = await supabase
+        .from('papers')
+        .delete()
+        .eq('id', id);
+      if (deleteError) throw deleteError;
+      fetchPapers();
+    } catch (err) {
+      console.error('Error deleting paper:', err.message);
+      alert('Error deleting paper: ' + err.message);
+    }
+  };
+
+  if (loading) return <p>Loading papers...</p>;
+  if (error) return <p className="error-message">Error: {error}</p>;
+
   return (
-    <div>
-      <h2>Uploaded Papers</h2>
-      <ul>
-        {papers.map(p => (
-          <li key={p.id}>
-            <a href={getPublicUrl(p.file_key)} target="_blank">{p.filename}</a>
-            <span> — {p.subject} | {p.year} | {p.batch}</span>
-          </li>
-        ))}
-      </ul>
+    <div className="main-container">
+      <h2>Available Papers</h2>
+      {papers.length === 0 ? (
+        <p>No papers uploaded yet.</p>
+      ) : (
+        <ul className="responses-container">
+          {papers.map((paper) => {
+            const { id, filename, file_key, uploaded_by, uploaded_by_id } = paper;
+            const { data: publicUrlData } = supabase
+              .storage
+              .from('papers')
+              .getPublicUrl(file_key);
+
+            return (
+              <li key={id} className="free-class">
+                <div>
+                  <h3>{filename}</h3>
+                  <a
+                    href={publicUrlData.publicUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Paper
+                  </a>
+                  <p>Uploaded by: {uploaded_by || uploaded_by_id}</p>
+                </div>
+                {user && user.id === uploaded_by_id && (
+                  <button onClick={() => handleDelete(id, uploaded_by_id)}>Delete</button>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </div>
   );
 }

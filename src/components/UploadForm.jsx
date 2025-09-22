@@ -1,77 +1,114 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Modal from './Modal';
 import { supabase } from '../supabaseClient';
 
-export default function UploadForm({ user }) {
+export default function UploadForm({ isOpen, onClose }) {
+  const [title, setTitle] = useState('');
   const [file, setFile] = useState(null);
-  const [meta, setMeta] = useState({ subject: '', year: '', batch: '' });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [papers, setPapers] = useState([]);
+  const [year, setYear] = useState('');
+  const [batch, setBatch] = useState('');
+  const [subject, setSubject] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
-  useEffect(() => {
-    fetchPapers();
-  }, []);
+  const handleFileChange = (e) => setFile(e.target.files[0]);
 
-  const fetchPapers = async () => {
-    const { data } = await supabase.from('papers').select('*');
-    setPapers(data || []);
-  };
-
-  const handleUpload = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
-    if (!file) return setError('Choose a file');
-
-    // duplicate check
-    const duplicate = papers.some(p => p.filename.toLowerCase() === file.name.toLowerCase());
-    if (duplicate) return setError('A paper with this filename already exists');
-
-    // MIME type check
-    const allowed = ['application/pdf', 'image/png', 'image/jpeg', 'image/jpg'];
-    if (!allowed.includes(file.type)) return setError('Only PDF/PNG/JPEG allowed'); // ALTHOUGH, wildcards setup in supabase `image/*`
-                                                                                    // ig we will see how this turns out
-
-    // 2 mb size limit
-    if (file.size > 2 * 1024 * 1024) return setError('Max file size 2 MB.');
-
-    setLoading(true);
-    const fileKey = `${user.id}/${Date.now()}_${file.name}`;
-    const { error: upErr } = await supabase.storage.from('papers').upload(fileKey, file);
-    if (upErr) {
-      setError(upErr.message);
-      setLoading(false);
+    if (!file || !title || !year || !subject) {
+      setError('Please provide title, file, year, and subject.');
       return;
     }
 
-    const { error: insertErr } = await supabase.from('papers').insert([{
-      filename: file.name,
-      file_key: fileKey,
-      subject: meta.subject,
-      year: meta.year,
-      batch: meta.batch,
-      uploaded_by: user.email,
-      uploaded_by_id: user.id
-    }]);
+    setUploading(true);
+    setError(null);
+    setSuccess(false);
 
-    if (insertErr) setError(insertErr.message);
-    else {
+    try {
+      const timestamp = Date.now();
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${title.replace(/\s+/g, '-')}-${timestamp}.${fileExt}`;
+
+      const { data: authData, error: userError } = await supabase.auth.getUser();
+      if (userError || !authData.user) throw new Error('User not authenticated');
+
+      const user = authData.user;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('papers')
+        .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+      if (uploadError) throw uploadError;
+
+      const { data, error: insertError } = await supabase
+        .from('papers')
+        .insert([{
+          filename: title,
+          file_key: filePath,
+          uploaded_by_id: user.id, // this too so fucking long to fix oml
+          uploaded_by: user.email,
+          year,
+          batch: batch.trim() || null,
+          subject: subject.trim(),
+        }]);
+
+      if (insertError) throw insertError;
+
+      setSuccess(true);
+      setTitle('');
       setFile(null);
-      setMeta({ subject: '', year: '', batch: '' });
-      fetchPapers();
-    }
+      setYear('');
+      setBatch('');
+      setSubject('');
 
-    setLoading(false);
+      setTimeout(() => {
+        onClose();
+        setSuccess(false);
+      }, 2000);
+
+    } catch (err) {
+      console.error('Error uploading paper:', err);
+      setError(err.message);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleUpload}>
-      <input type="file" onChange={e => setFile(e.target.files[0])} required />
-      <input type="text" placeholder="Subject" value={meta.subject} onChange={e => setMeta({...meta, subject: e.target.value})} required />
-      <input type="text" placeholder="Year" value={meta.year} onChange={e => setMeta({...meta, year: e.target.value})} required />
-      <input type="text" placeholder="Batch" value={meta.batch} onChange={e => setMeta({...meta, batch: e.target.value})} required />
-      <button type="submit" disabled={loading}>{loading ? 'Uploading...' : 'Upload'}</button>
-      <p>{error}</p>
-    </form>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <h2>Upload New Paper</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Paper Title:</label>
+          <input type="text" value={title} onChange={e => setTitle(e.target.value)} disabled={uploading} />
+        </div>
+        <div>
+          <label>Subject:</label>
+          <input type="text" value={subject} onChange={e => setSubject(e.target.value)} disabled={uploading} />
+        </div>
+        <div>
+          <label>Year:</label>
+          <select value={year} onChange={e => setYear(e.target.value)} disabled={uploading}>
+            <option value="">Select Year</option>
+            <option value="1st Year">1st Year</option>
+            <option value="2nd Year">2nd Year</option>
+            <option value="3rd Year">3rd Year</option>
+            <option value="4th Year">4th Year</option>
+          </select>
+        </div>
+        <div>
+          <label>Batch (Optional):</label>
+          <input type="text" value={batch} onChange={e => setBatch(e.target.value)} disabled={uploading} />
+        </div>
+        <div>
+          <label>Select File:</label>
+          <input type="file" onChange={handleFileChange} disabled={uploading} />
+        </div>
+        <button type="submit" disabled={uploading}>{uploading ? 'Uploading...' : 'Upload'}</button>
+        {error && <p className="error-message">Error: {error}</p>}
+        {success && <p className="success-message">Upload Successful!</p>}
+      </form>
+    </Modal>
   );
 }

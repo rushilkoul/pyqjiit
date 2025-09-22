@@ -1,101 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+:root {
+  --bg-color: #F9FAFB;
+  --text-color: #111827;
+  --border-color: #ededed;
+  --hover-border-color: #9ca3af;
+  --focus-border-color: #6b7280;
+  --button-bg: #111827;
+  --button-hover: #374151;
+  --button-active: #1f2937;
+  --select-bg: white;
+  --option-hover-bg: #f3f4f6;
+  --option-selected-bg: #111827;
+  --option-selected-color: white;
+  --success-color: #00990d;
+  --box-shadow-color: #d6d6d6;
+}
+
+.dark-theme {
+  --bg-color: #070707;
+  --text-color: #f9fafb;
+  --border-color: #131313;
+  --hover-border-color: #6b7280;
+  --focus-border-color: #cbcbcb;
+  --button-bg: #f7f7f7;
+  --button-hover: #fbfbfb;
+  --button-active: #ececec;
+  --select-bg: #1a1a1a;
+  --option-hover-bg: #0f0f0f;
+  --option-selected-bg: #e7e7e7;
+  --option-selected-color: #111827;
+  --success-color: #8dff97;
+  --box-shadow-color: #3c3c3c;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
 }
 
 body {
-  background: #f7f9fc;
-  color: #333;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Geist", sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 0;
+}
+
+pre {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  opacity: 0.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  gap: .5rem;
 }
 
-form {
-  background: #fff;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="file"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-button {
-  padding: 10px;
-  background: #0070f3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-
-button:hover {
-  background: #005ac1;
-}
-
-button:disabled {
-  background: #a0c4ff;
-  cursor: not-allowed;
-}
-
-p {
-  font-size: 14px;
-  color: #e63946;
-}
-
-h2 {
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-  width: 100%;
-  max-width: 600px;
-}
-
-li {
-  background: #fff;
-  margin-bottom: 8px;
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  padding: 1rem 2rem;
+  background: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-li a {
-  color: #0070f3;
+.navbar > h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-color);
+  transition: color 0.3s ease;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  padding-top: 0;
+}
+
+.session-manager {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.signout-button {
+  background: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.signout-button:hover {
+  background: var(--button-hover);
+}
+
+.github-logo {
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.github-logo:hover {
+  color: var(--button-bg);
+}
+
+.theme-toggle {
+  background-color: transparent;
+  color: var(--button-bg);
+  border: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-button {
+  background: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: all 0.2s ease;
+}
+
+.upload-button:hover {
+  background: var(--button-hover);
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  padding-top: 10%;
+}
+.modal-content {
+  background: var(--bg-color);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  padding-top: 3.5rem;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  color: var(--text-color);
+  position: relative;
+  box-shadow: 0 10px 25px var(--box-shadow-color);
+  border: 1px solid var(--border-color);
+}
+
+.modal-go-back {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: none;
+  color: var(--text-color);
+  opacity: 0.7;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Inconsolata', monospace;
+  font-size: 0.9rem;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.modal-go-back:hover {
+  opacity: 1;
+}
+
+.modal-content-inner {
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  flex: 1;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+form div {
+  margin-bottom: 0;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+form input[type="text"],
+form input[type="file"],
+form input[type="email"],
+form select {
+  width: 100%;
+  padding: 0.65rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: var(--select-bg);
+  color: var(--text-color);
+}
+
+form select {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  font-size: 1.1rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+form select:hover {
+  border-color: var(--hover-border-color);
+}
+
+form select option {
+  background: var(--select-bg);
+  color: var(--text-color);
+  padding: 0.5rem;
+  font-family: 'Inconsolata', monospace;
+}
+
+form input[type="email"] {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+form input[type="text"] {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+form input[type="text"]:focus,
+form input[type="file"]:focus,
+form input[type="email"]:focus,
+form select:focus {
+  border-color: var(--focus-border-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.1);
+}
+
+form button[type="submit"] {
+  background-color: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+form button[type="submit"]:hover {
+  background-color: var(--button-hover);
+}
+
+form button[type="submit"]:active {
+  background-color: var(--button-active);
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-top: 0.75rem;
+}
+
+.success-message {
+  color: var(--success-color);
+  margin-top: 0.75rem;
+}
+
+.responses-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  justify-content: space-evenly;
+  padding-top: 1rem;
+}
+
+.free-class {
+  background: var(--card-bg);
+  backdrop-filter: blur(6px);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px var(--box-shadow-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  flex-grow: 1;
+  width: 20%;
+}
+
+.free-class:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.free-class h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-color);
+}
+
+.free-class a {
+  color: var(--text-color);
   text-decoration: none;
-  font-weight: bold;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 
-li a:hover {
+.free-class a:hover {
   text-decoration: underline;
 }
 
-span {
-  font-size: 12px;
-  color: #555;
+.free-class p {
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.free-class button {
+  margin-top: 1rem;
+  background: var(--button-bg);
+  color: var(--bg-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.free-class button:hover {
+  background: var(--button-hover);
+}
+
+@media (max-width: 1024px) {
+  .modal-content {
+    max-width: 600px;
+    width: 85%;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .navbar-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .session-manager {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.25rem;
+  }
+
+  .signout-button,
+  .upload-button,
+  .theme-toggle,
+  .github-logo {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem;
+  }
+
+  .modal-overlay {
+    padding: 0;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .modal-content {
+    max-width: none;
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    padding: 1rem;
+    padding-top: 3.5rem;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-content-inner {
+    height: auto;
+    min-height: 15vh;
+  }
+
+  form input[type="text"],
+  form input[type="file"],
+  form input[type="email"],
+  form button[type="submit"] {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 525px) {
+  .free-class {
+    width: 100%;
+  }
+  
+  .modal-overlay {
+    padding: 0;
+  }
+  
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    max-height: none;
+    padding: 0.75rem;
+    padding-top: 3rem;
+  }
+  
+  .modal-go-back {
+    top: 0.5rem;
+    left: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .modal-content-inner {
+    min-height: 100px;
+  }
 }

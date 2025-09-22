@@ -3,9 +3,12 @@ import { supabase } from './supabaseClient';
 import Login from './components/Login';
 import UploadForm from './components/UploadForm';
 import PapersList from './components/PapersList';
+import Navbar from './components/Navbar';
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setUser(data?.session?.user));
@@ -17,10 +20,35 @@ export default function App() {
     return () => listener?.subscription?.unsubscribe();
   }, []);
 
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error.message);
+    }
+  }
+
+  const handleUploadButtonClick = () => {
+    if (user) {
+      setIsUploadModalOpen(true);
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
+
   return (
-    <div>
-      {user ? <UploadForm user={user} /> : <Login />}
-      <PapersList />
+    <div className="main">
+      <Navbar user={user} onSignOut={handleSignOut} />
+      <main className="main-content">
+      <button
+          onClick={handleUploadButtonClick}
+          className="upload-button"
+        >
+          {user ? 'Upload Question Paper' : 'Sign in to Upload Question Papers'}
+        </button>
+        <PapersList />
+        <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+        <UploadForm isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} user={user} />
+      </main>
     </div>
   );
 }
