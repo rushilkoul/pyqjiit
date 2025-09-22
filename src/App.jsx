@@ -58,6 +58,10 @@ export default function App() {
           {user ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
       )}
+      
+      <footer className="footer">
+        <p>made with 💜 by rushil</p>
+      </footer>
     </div>
   );
 }
