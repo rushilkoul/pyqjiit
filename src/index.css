@@ -231,7 +231,7 @@ pre {
   align-self: flex-end;
   transition: all 0.2s ease;
   position: fixed;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .upload-button:hover {
