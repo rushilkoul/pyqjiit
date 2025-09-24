@@ -1,10 +1,105 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 
+const ALL_YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+
+const SUBJECTS_BY_YEAR_SEMESTER = {
+  '1st Year': {
+    'Semester 1': [
+      'SDF - I',
+      'SDF Lab - I',
+      'English',
+      'Maths - I',
+      'Basic Electronics',
+      'Basic Electronics Lab',
+      'Physics - I',
+      'Physics Lab-I',
+      'EDD - I',
+      'Workshop'
+    ],
+    'Semester 2': [
+      'SDF - II',
+      'SDF Lab - II',
+      'Chemistry Lab',
+      'Chemistry',
+      'Maths - II',
+      'Physics - II',
+      'Physics Lab - II',
+      'EDD - II',
+      'Computer System Architecture',
+      'Communication Skills Lab'
+    ]
+  },
+  '2nd Year': {
+    'Semester 3': [
+      'Theoretical Foundations of Computer Science',
+      'Data Structures',
+      'Database Systems & Web',
+      'Probability and Random Processes',
+      'Probability and Statistics',
+      'Economics',
+      'Data Structure Lab',
+      'Database System & Web Lab'
+    ],
+    'Semester 4': [
+      'Design and Analysis of Algorithms',
+      'Object Oriented Programming',
+      'Computer Networks',
+      'Software Engineering',
+      'Discrete Mathematics',
+      'Algorithms Lab',
+      'OOP Lab',
+      'Networks Lab'
+    ]
+  },
+  '3rd Year': {
+    'Semester 5': [
+      'Computer Networks and Internet of Things',
+      'Fundamentals of Machine Learning',
+      'Object Oriented Analysis and Design Using JAVA',
+      'Computer Organization and Architecture',
+      'Computer Organization and Architecture Lab',
+      'Operating System and System Programming Lab',
+      'Open Source Software Lab',
+      'Information Security Lab'
+    ],
+    'Semester 6': [
+      'Compiler Design',
+      'Operating Systems',
+      'Database Management Systems',
+      'Web Technologies',
+      'Artificial Intelligence',
+      'Compiler Lab',
+      'OS Lab',
+      'Web Development Lab'
+    ]
+  },
+  '4th Year': {
+    'Semester 7': [
+      'Major Project Part - 1 (CSE)',
+      'Summer Training & Viva'
+    ],
+    'Semester 8': [
+      'Major Project Part - 2 (CSE)',
+      'Internship & Seminar'
+    ]
+  }
+};
+
+const ALL_SUBJECTS = [...new Set(
+  Object.values(SUBJECTS_BY_YEAR_SEMESTER)
+    .flatMap(yearData => Object.values(yearData))
+    .flat()
+)].sort();
+
 export default function PapersList({ user }) {
   const [papers, setPapers] = useState([]);
+  const [filteredPapers, setFilteredPapers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedYear, setSelectedYear] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [availableSubjects, setAvailableSubjects] = useState(ALL_SUBJECTS);
 
   useEffect(() => {
     fetchPapers();
@@ -21,6 +116,34 @@ export default function PapersList({ user }) {
     return () => supabase.removeChannel(channel);
   }, []);
 
+  useEffect(() => {
+    let filtered = papers;
+
+    if (selectedYear) {
+      filtered = filtered.filter(paper => paper.year === selectedYear);
+    }
+
+    if (selectedSubject) {
+      filtered = filtered.filter(paper => paper.subject === selectedSubject);
+    }
+
+    setFilteredPapers(filtered);
+  }, [papers, selectedYear, selectedSubject]);
+
+  useEffect(() => {
+    if (selectedYear) {
+      const yearData = SUBJECTS_BY_YEAR_SEMESTER[selectedYear];
+      const subjectsForYear = yearData ? Object.values(yearData).flat() : [];
+      setAvailableSubjects(subjectsForYear);
+      
+      if (selectedSubject && !subjectsForYear.includes(selectedSubject)) {
+        setSelectedSubject('');
+      }
+    } else {
+      setAvailableSubjects(ALL_SUBJECTS);
+    }
+  }, [selectedYear, selectedSubject]);
+
   const fetchPapers = async () => {
     setLoading(true);
     setError(null);
@@ -31,6 +154,7 @@ export default function PapersList({ user }) {
         .order('inserted_at', { ascending: false });
       if (fetchError) throw fetchError;
       setPapers(data);
+      setFilteredPapers(data);
     } catch (err) {
       console.error('Error fetching papers:', err.message);
       setError(err.message);
@@ -61,13 +185,63 @@ export default function PapersList({ user }) {
   if (error) return <p className="error-message">Error: {error}</p>;
 
   return (
+    <>
+    {papers.length > 0 && (
+      <div className="filters-container">
+        <h3>Filters</h3>
+        <div className="filters-row">
+          <div className="filter-item">
+            <span>Year:</span>
+            <select
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              className="filter-select"
+            >
+              <option value="">All</option>
+              {ALL_YEARS.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+          
+          <div className="filter-item">
+            <span>Subject:</span>
+            <select
+              value={selectedSubject}
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="filter-select"
+            >
+              <option value="">All</option>
+              {availableSubjects.map(subject => (
+                <option key={subject} value={subject}>{subject}</option>
+              ))}
+            </select>
+          </div>
+          
+          {(selectedYear || selectedSubject) && (
+            <button
+              onClick={() => {
+                setSelectedYear('');
+                setSelectedSubject('');
+              }}
+              className="clear-filters-btn"
+            >
+              clear filters
+            </button>
+          )}
+        </div>
+      </div>
+    )}
     <div className="main-container">
       <h2>Available Papers</h2>
+      
       {papers.length === 0 ? (
         <p>No papers uploaded yet.</p>
+      ) : filteredPapers.length === 0 ? (
+        <p>No papers match the selected filters{selectedYear && ` (Year: ${selectedYear})`}{selectedSubject && ` (Subject: ${selectedSubject})`}.</p>
       ) : (
         <ul className="responses-container">
-          {papers.map((paper) => {
+          {filteredPapers.map((paper) => {
             const { 
               id, 
               filename, 
@@ -134,5 +308,6 @@ export default function PapersList({ user }) {
         </ul>
       )}
     </div>
+    </>
   );
 }

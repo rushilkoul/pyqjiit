@@ -9,13 +9,24 @@ export default function Login({ isOpen, onClose }) {
   const [error, setError] = useState('');
 
   const validateEnrollmentNumber = (number) => {
-    const isValid = /^\d{10}$/.test(number);
-    return isValid;
+    const is10Digit = /^\d{10}$/.test(number);
+    const is12Digit = /^\d{12}$/.test(number);
+    return is10Digit || is12Digit;
+  };
+
+  const getSectorInfo = (number) => {
+    if (/^\d{10}$/.test(number)) {
+      return { sector: 'Sector 62', isValid: true };
+    } else if (/^\d{12}$/.test(number)) {
+      return { sector: 'Sector 128', isValid: true };
+    } else {
+      return { sector: 'Invalid', isValid: false };
+    }
   };
 
   const handleEnrollmentChange = (e) => {
     const value = e.target.value;
-    const digitsOnly = value.replace(/\D/g, '').slice(0, 10);
+    const digitsOnly = value.replace(/\D/g, '').slice(0, 12);
     setEnrollmentNumber(digitsOnly);
     
     if (error) setError('');
@@ -25,7 +36,7 @@ export default function Login({ isOpen, onClose }) {
     event.preventDefault();
     
     if (!validateEnrollmentNumber(enrollmentNumber)) {
-      setError('Enrollment number must be exactly 10 digits');
+      setError('Enrollment number must be 10 digits (Sector 62) or 12 digits (Sector 128)');
       return;
     }
     
@@ -67,12 +78,22 @@ export default function Login({ isOpen, onClose }) {
           <form onSubmit={handleLogin}>
             <input
               type="text"
-              placeholder="Enrollment Number (10 digits)"
+              placeholder="Enrollment Number (10 or 12 digits)"
               value={enrollmentNumber}
               onChange={handleEnrollmentChange}
               disabled={loading}
-              maxLength={10}
+              maxLength={12}
             />
+            {enrollmentNumber && (
+              <p style={{ 
+                fontSize: '0.9rem', 
+                marginTop: '0.25rem',
+                color: getSectorInfo(enrollmentNumber).isValid ? 'var(--success-color)' : 'var(--text-color)',
+                opacity: 0.8
+              }}>
+                {getSectorInfo(enrollmentNumber).sector}
+              </p>
+            )}
             {error && <p className="error-message">{error}</p>}
             <button
               type="submit"

@@ -16,6 +16,8 @@
   --option-selected-color: white;
   --success-color: #00990d;
   --box-shadow-color: #d6d6d6;
+  --frosted-bg: #ffffff46;
+  --frosted-border: #e7e7e7;
 }
 
 .dark-theme {
@@ -32,7 +34,9 @@
   --option-selected-bg: #e7e7e7;
   --option-selected-color: #111827;
   --success-color: #8dff97;
-  --box-shadow-color: #3c3c3c;
+  --box-shadow-color: #212121;
+  --frosted-bg: #0e0e0ed9;
+  --frosted-border: #1a1a1a;
 }
 
 * {
@@ -226,6 +230,8 @@ pre {
   cursor: pointer;
   align-self: flex-end;
   transition: all 0.2s ease;
+  position: fixed;
+  z-index: 9999;
 }
 
 .upload-button:hover {
@@ -755,8 +761,6 @@ form button[type="submit"]:active {
   bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--button-bg);
-  color: var(--bg-color);
   border: none;
   padding: 1rem 1.5rem;
   border-radius: 25px;
@@ -773,6 +777,10 @@ form button[type="submit"]:active {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: var(--frosted-bg);
+  color: var(--button-bg);
+  backdrop-filter: blur(3px);
+  border: 1px solid var(--frosted-border);
 }
 
 .mobile-upload-button:hover {
@@ -879,4 +887,141 @@ form button[type="submit"]:active {
 .footer p {
   margin: 0;
   font-family: "Geist", sans-serif;
+}
+
+.filters-container {
+  align-self: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.filters-container h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.filters-row {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-item span {
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.filter-select {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  background: var(--select-bg);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: var(--focus-border-color);
+}
+
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+  padding: 0;
+  opacity: 0.7;
+}
+
+.clear-filters-btn:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .filters-container {
+    margin-bottom: 1rem;
+  }
+  
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .filter-item {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  
+  .filter-item span {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .filter-select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-size: max(1rem, 16px);
+  }
+  
+  .clear-filters-btn {
+    align-self: center;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .filters-container {
+    margin-bottom: 0.75rem;
+  }
+  
+  .filters-container h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .filter-select {
+    padding: 0.875rem;
+    border-radius: 0.375rem;
+  }
+}
+
+/* im so tired of this layout atp isko ab mai manually theek kar raha hu dont judge */
+@media (max-width: 1300px) {
+  .free-class {
+    width: 30%;
+  }
+}
+@media (max-width: 1080px) {
+  .free-class {
+    width: 40%;
+  }
+
+  .navbar {
+    position: fixed;
+    z-index: 999;
+    width: 100%;
+    background: var(--frosted-bg);
+    backdrop-filter: blur(6px);
+    box-shadow: 0px 8px 17px var(--box-shadow-color);
+  }
+  .main-content {
+    padding-top: calc(86px + 2rem);
+  }
 }
