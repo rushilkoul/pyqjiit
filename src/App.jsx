@@ -4,6 +4,7 @@ import Login from './components/Login';
 import UploadForm from './components/UploadForm';
 import PapersList from './components/PapersList';
 import Navbar from './components/Navbar';
+import DeveloperMessage from './components/DeveloperMessage';
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -58,6 +59,8 @@ export default function App() {
           {user ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
       )}
+      
+      <DeveloperMessage />
       
       <footer className="footer">
         <p>made with 💜 by rushil</p>
