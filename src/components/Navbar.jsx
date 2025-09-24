@@ -35,7 +35,7 @@ function Navbar({ user, onSignOut }) {
 
   return (
     <nav className="navbar">
-        <h1>PYQJIIT</h1>
+        <h1><span>PYQ</span>JIIT</h1>
         <div className="navbar-actions">
           {user && (
             <div className="user-menu" ref={userMenuRef}>

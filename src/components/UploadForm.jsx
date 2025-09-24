@@ -6,27 +6,27 @@ import jsPDF from 'jspdf';
 const SUBJECTS_BY_YEAR_SEMESTER = {
   '1st Year': {
     'Semester 1': [
-      'Software Development Fundamentals - I',
-      'Software Development Fundamentals Lab-I',
+      'SDF - I',
+      'SDF Lab - I',
       'English',
-      'Mathematics-1',
+      'Maths - I',
       'Basic Electronics',
       'Basic Electronics Lab',
-      'Physics-1',
-      'Physics Lab-1',
-      'EDD-1',
+      'Physics - I',
+      'Physics Lab-I',
+      'EDD - I',
       'Workshop'
     ],
     'Semester 2': [
-      'Software Development Fundamentals - II',
-      'Software Development Fundamentals Lab-II',
-      'Chemistry',
-      'Mathematics-2',
-      'Computer System Architecture',
-      'Physics-2',
+      'SDF - II',
+      'SDF Lab - II',
       'Chemistry Lab',
-      'Physics Lab-2',
-      'EDD-2',
+      'Chemistry',
+      'Maths - II',
+      'Physics - II',
+      'Physics Lab - II',
+      'EDD - II',
+      'Computer System Architecture',
       'Communication Skills Lab'
     ]
   },

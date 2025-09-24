@@ -91,6 +91,9 @@ pre {
   transition: color 0.3s ease;
 }
 
+.navbar > h1 > span {
+  font-weight: 300;
+}
 .navbar-actions {
   display: flex;
   gap: 1rem;
