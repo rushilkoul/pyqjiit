@@ -100,6 +100,7 @@ export default function PapersList({ user }) {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [availableSubjects, setAvailableSubjects] = useState(ALL_SUBJECTS);
+  const [studentNames, setStudentNames] = useState({});
 
   useEffect(() => {
     fetchPapers();
@@ -144,6 +145,18 @@ export default function PapersList({ user }) {
     }
   }, [selectedYear, selectedSubject]);
 
+  useEffect(() => {
+    if (papers.length > 0) {
+      const uniqueEnrollments = [...new Set(papers.map(p => p.uploaded_by).filter(Boolean))];
+      
+      console.log(`Found ${uniqueEnrollments.length} unique uploaders:`, uniqueEnrollments);
+      
+      uniqueEnrollments.forEach(enrollment => {
+        getStudentName(enrollment);
+      });
+    }
+  }, [papers]);
+
   const fetchPapers = async () => {
     setLoading(true);
     setError(null);
@@ -180,6 +193,23 @@ export default function PapersList({ user }) {
       alert('Error deleting paper: ' + err.message);
     }
   };
+
+  const getStudentName = async (id) => {
+    let enrollmentNumber = id.replace("@mail.jiit.ac.in", "");
+    
+    // this is a private api. only works for AY2025-26 rn
+    const response = await fetch(`https://jiitstudent.vercel.app/student/${enrollmentNumber}`);
+    const data = await response.json();
+    
+    let name = data.data.name.toLowerCase().replace(/(^|\s)\w/g, match => match.toUpperCase());
+    
+    if (data.success) {
+      setStudentNames(prev => ({
+        ...prev,
+        [id]: name
+      }));
+    } 
+  }
 
   if (loading) return <p>Loading papers...</p>;
   if (error) return <p className="error-message">Error: {error}</p>;
@@ -263,6 +293,7 @@ export default function PapersList({ user }) {
               .getPublicUrl(file_key);
 
             const uploadDate = new Date(inserted_at).toLocaleDateString();
+            const displayName = studentNames[uploaded_by] || uploaded_by;
 
             return (
               <li key={id} className="free-class">
@@ -280,7 +311,7 @@ export default function PapersList({ user }) {
                     {year && semester && <p><strong>{year} - {semester}</strong></p>}
                     {year && !semester && <p><strong>{year}</strong></p>}
                     {batch && <p><strong>Batch(es):</strong> {batch}</p>}
-                    <p><strong>Uploaded:</strong> {uploadDate} by {uploaded_by || uploaded_by_id}</p>
+                    <p><strong>Uploaded:</strong> {uploadDate} by {displayName}</p>
                   </div>
                   
                   <div className="paper-actions">
