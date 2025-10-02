@@ -30,6 +30,7 @@ available on `http://localhost:5173`
 ### Supabase schema:
 The app looks for a table `papers` and a bucket `papers`
 Run in the SQL editor to make your table `papers`:
+> NOTE: This is a "net effect" recreation of a wide number of SQL queries ran during development.
 ```sql
 CREATE TABLE IF NOT EXISTS public.papers (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -63,23 +64,19 @@ CREATE INDEX IF NOT EXISTS idx_papers_year_semester ON public.papers(year, semes
 ALTER TABLE public.papers ENABLE ROW LEVEL SECURITY;
 
 -- policies
-DROP POLICY IF EXISTS "Logged-in users can insert" ON public.papers;
 CREATE POLICY "Logged-in users can insert"
 ON public.papers
 FOR INSERT TO authenticated
 WITH CHECK (uploaded_by_id = (SELECT auth.uid()));
 
-DROP POLICY IF EXISTS "All users can view papers" ON public.papers;
 CREATE POLICY "All users can view papers"
 ON public.papers
 FOR SELECT
 USING (true);
 ```
-> [!IMPORTANT]
-> these are NOT the exact queries i ran. <br />
-> during development i changed a lot of stuff so this is my best attempt at recreating what i did, if there are issues let me know
 
-Also make your `papers` bucket.
+Also make and configure your `papers` bucket.
+> The deployed version has a 2MB cap on upload.
 
 ## Deploying
 The project is configured for deployment on Vercel with the included `vercel.json`:
