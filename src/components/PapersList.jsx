@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 
 const ALL_YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
@@ -99,8 +99,10 @@ export default function PapersList({ user }) {
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
-  const [availableSubjects, setAvailableSubjects] = useState(ALL_SUBJECTS);
+  const [availableSubjects, setAvailableSubjects] = useState([]);
   const [studentNames, setStudentNames] = useState({});
+  const [pillIndicator, setPillIndicator] = useState({ width: 0, left: 0 });
+  const pillRefs = useRef([]);
 
   useEffect(() => {
     fetchPapers();
@@ -156,6 +158,27 @@ export default function PapersList({ user }) {
       });
     }
   }, [papers]);
+
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeIndex = selectedYear === '' ? 0 : ALL_YEARS.indexOf(selectedYear) + 1;
+      const activeButton = pillRefs.current[activeIndex];
+      
+      if (activeButton) {
+        setPillIndicator({
+          width: activeButton.offsetWidth,
+          left: activeButton.offsetLeft
+        });
+      }
+    };
+
+    const timer = setTimeout(updateIndicator, 10);
+    window.addEventListener('resize', updateIndicator);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', updateIndicator);
+    };
+  }, [selectedYear, papers]);
 
   const fetchPapers = async () => {
     setLoading(true);
@@ -220,18 +243,33 @@ export default function PapersList({ user }) {
       <div className="filters-container">
         <h3>Filters</h3>
         <div className="filters-row">
-          <div className="filter-item">
-            <span>Year:</span>
-            <select
-              value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">All</option>
-              {ALL_YEARS.map(year => (
-                <option key={year} value={year}>{year}</option>
+          <div className="filter-group">
+            <div className="pill-selector">
+              <div 
+                className="pill-indicator" 
+                style={{ 
+                  width: `${pillIndicator.width}px`, 
+                  transform: `translateX(${pillIndicator.left}px)` 
+                }}
+              />
+              <button
+                ref={el => pillRefs.current[0] = el}
+                className={`pill ${selectedYear === '' ? 'active' : ''}`}
+                onClick={() => setSelectedYear('')}
+              >
+                All
+              </button>
+              {ALL_YEARS.map((year, index) => (
+                <button
+                  key={year}
+                  ref={el => pillRefs.current[index + 1] = el}
+                  className={`pill ${selectedYear === year ? 'active' : ''}`}
+                  onClick={() => setSelectedYear(year)}
+                >
+                  Year {index + 1}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
           
           <div className="filter-item">

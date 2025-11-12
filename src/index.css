@@ -949,6 +949,82 @@ form button[type="submit"]:active {
   opacity: 1;
 }
 
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pill-selector {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  background: var(--select-bg);
+  padding: 0.25rem;
+  border-radius: 2rem;
+  border: 1px solid var(--border-color);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.pill-selector::-webkit-scrollbar {
+  height: 6px;
+}
+
+.pill-selector::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pill-selector::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.pill-selector::-webkit-scrollbar-thumb:hover {
+  background: var(--text-color);
+}
+
+.pill-indicator {
+  position: absolute;
+  height: calc(100% - 0.5rem);
+  background: var(--button-bg);
+  border-radius: 1.5rem;
+  top: 0.25rem;
+  left: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform, width;
+}
+
+.pill {
+  position: relative;
+  z-index: 1;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 1.5rem;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pill:hover {
+  color: var(--text-color);
+}
+
+.pill.active {
+  color: var(--bg-color);
+}
+
 @media (max-width: 768px) {
   .filters-container {
     margin-bottom: 1rem;
