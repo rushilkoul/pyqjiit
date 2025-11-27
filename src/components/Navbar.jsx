@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FaGithub, FaSun, FaMoon, FaUser, FaChevronDown } from 'react-icons/fa';
 import { useTheme } from '../themecontext';
+// import logo from '../assets/templogo.png';
 
 function Navbar({ user, onSignOut }) {
   const githubLink = "https://github.com/rushilkoul/pyqjiit";
@@ -35,7 +36,13 @@ function Navbar({ user, onSignOut }) {
 
   return (
     <nav className="navbar">
-        <h1><span>PYQ</span>JIIT</h1>
+        <div className="navbar-brand">
+          {/* <img src={logo} alt="PYQJIIT Logo" className="navbar-logo" /> */}
+          <div>
+            <h1><span>PYQ</span>JIIT</h1> 
+            <span className="subtitle">All your PYQs in one place.</span>
+          </div>
+        </div>
         <div className="navbar-actions">
           {user && (
             <div className="user-menu" ref={userMenuRef}>

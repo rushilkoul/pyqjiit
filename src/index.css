@@ -2,39 +2,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
 :root {
-  --bg-color: #F9FAFB;
+  --bg-color: #faf8ff;
+  --card-bg: #F9FAFB;
   --text-color: #111827;
   --border-color: #ededed;
   --hover-border-color: #9ca3af;
   --focus-border-color: #6b7280;
-  --button-bg: #111827;
-  --button-hover: #374151;
-  --button-active: #1f2937;
+  --button-bg: #7f63e5;
+  --button-hover: #694fc4;
+  --button-active: #5e48ae;
+  --button-text: #F9FAFB;
   --select-bg: white;
   --option-hover-bg: #f3f4f6;
   --option-selected-bg: #111827;
   --option-selected-color: white;
   --success-color: #00990d;
-  --box-shadow-color: #d6d6d6;
+  --box-shadow-color: #b9b4cd;
   --frosted-bg: #ffffff46;
   --frosted-border: #e7e7e7;
 }
 
 .dark-theme {
-  --bg-color: #070707;
+  --bg-color: #010003;
+  --card-bg: #020202;
   --text-color: #f9fafb;
   --border-color: #131313;
   --hover-border-color: #6b7280;
   --focus-border-color: #cbcbcb;
-  --button-bg: #f7f7f7;
-  --button-hover: #fbfbfb;
-  --button-active: #ececec;
+  --button-bg: #7f63e5;
+  --button-hover: #b5a1ff;
+  --button-active: #6547d1;
+  --button-text: #F9FAFB;
   --select-bg: #1a1a1a;
   --option-hover-bg: #0f0f0f;
   --option-selected-bg: #e7e7e7;
   --option-selected-color: #111827;
   --success-color: #8dff97;
-  --box-shadow-color: #212121;
+  --box-shadow-color: #0e0823;
   --frosted-bg: #0e0e0ed9;
   --frosted-border: #1a1a1a;
 }
@@ -87,17 +91,36 @@ pre {
   transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.navbar > h1 {
+.navbar > .navbar-brand div> h1 {
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: var(--text-color);
+  color: var(--button-bg);
   transition: color 0.3s ease;
 }
 
-.navbar > h1 > span {
-  font-weight: 300;
+
+.navbar-brand {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
+.navbar .navbar-brand > div > h1 > span {
+  font-weight: 300;
+  color: var(--text-color);
+}
+
+.navbar-logo {
+  width: 50px;
+}
+
+.subtitle {
+  font-size: 0.75rem;
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+
 .navbar-actions {
   display: flex;
   gap: 1rem;
@@ -177,6 +200,8 @@ pre {
   align-items: center;
   padding: 3rem;
   padding-top: 0;
+  gap: 1rem;
+  width: 100%;
 }
 
 .session-manager {
@@ -223,7 +248,7 @@ pre {
 
 .upload-button {
   background: var(--button-bg);
-  color: var(--bg-color);
+  color: var(--button-text);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -370,7 +395,7 @@ form select:focus {
 
 form button[type="submit"] {
   background-color: var(--button-bg);
-  color: var(--bg-color);
+  color: var(--button-text);
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
@@ -504,6 +529,7 @@ form button[type="submit"]:active {
   gap: .75rem;
   justify-content: space-evenly;
   padding-top: 1rem;
+  width: 100%;
 }
 
 .free-class {
@@ -550,7 +576,7 @@ form button[type="submit"]:active {
 .free-class button {
   margin-top: 1rem;
   background: var(--button-bg);
-  color: var(--bg-color);
+  color: var(--button-text);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -587,28 +613,31 @@ form button[type="submit"]:active {
   font-size: 0.75rem;
   font-weight: 600;
   font-family: "Inconsolata", monospace;
+  line-height: 1;
 }
 
 .badge.subject {
-  background: #dbeafe;
-  color: #1e40af;
-  border: 1px solid #3b82f6;
+  background: #ece8ff;
+  color: #7f63e5;
+  border: 1px solid #7f63e5;
 }
 
 .dark-theme .badge.subject {
-  background: #1e3a8a;
-  color: #bfdbfe;
-  border: 1px solid #60a5fa;
+  background: #150f31;
+  color: #c3b3ff;
+  border: 1px solid #7f63e5;
 }
 
 .badge.verified {
   background: #dcfce7;
   color: #166534;
+  border: 1px solid #166534;
 }
 
 .dark-theme .badge.verified {
-  background: #14532d;
+  background: #092815;
   color: #bbf7d0;
+  border: 1px solid #14532d;
 }
 
 .badge.flagged {
@@ -648,7 +677,7 @@ form button[type="submit"]:active {
 
 .view-button {
   background: var(--button-bg);
-  color: var(--bg-color) !important;
+  color: var(--button-text) !important;
   text-decoration: none !important;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -736,7 +765,7 @@ form button[type="submit"]:active {
   left: 50%;
   transform: translateX(-50%);
   background: var(--button-bg);
-  color: var(--bg-color);
+  color: var(--button-text);
   border: none;
   padding: 0.75rem 2rem;
   border-radius: 25px;
@@ -784,7 +813,7 @@ form button[type="submit"]:active {
 }
 
 .mobile-upload-button:hover {
-  background: var(--button-hover);
+  /* background: var(--button-hover); */
   transform: translateX(-50%) translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
@@ -1022,7 +1051,7 @@ form button[type="submit"]:active {
 }
 
 .pill.active {
-  color: var(--bg-color);
+  color: var(--button-text);
 }
 
 @media (max-width: 768px) {

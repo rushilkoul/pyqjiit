@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-const CURRENT_VERSION = 'v0.2';
+const CURRENT_VERSION = 'v0.3';
 const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "Sector 128 students have 12-digit enrollment numbers, the code only handled 10 digits. sorry! fixed that, you guys can now log in!",
-  type: "fix"
+  message: "PYQJIIT now has a new domain! Unfortunately logged in users will need to sign in again. Apologies for the inconvenience. If you experience any issues, reach out on GitHub.",
+  type: "update"
 };
 
 export default function DeveloperMessage() {
