@@ -20,14 +20,12 @@ const SUBJECTS_BY_YEAR_SEMESTER = {
     'Semester 2': [
       'SDF - II',
       'SDF Lab - II',
-      'Chemistry Lab',
-      'Chemistry',
       'Maths - II',
       'Physics - II',
       'Physics Lab - II',
-      'EDD - II',
-      'Computer System Architecture',
-      'Communication Skills Lab'
+      'Workshop',
+      'UHV',
+      'LSPC Lab'
     ]
   },
   '2nd Year': {
