@@ -16,11 +16,11 @@ export default function Login({ isOpen, onClose }) {
 
   const getSectorInfo = (number) => {
     if (/^\d{10}$/.test(number)) {
-      return { sector: 'Sector 62', isValid: true };
+      return { sector: '✓ Sector 62', isValid: true };
     } else if (/^\d{12}$/.test(number)) {
-      return { sector: 'Sector 128', isValid: true };
+      return { sector: '✓ Sector 128', isValid: true };
     } else {
-      return { sector: 'Invalid', isValid: false };
+      return { sector: '○ Invalid', isValid: false };
     }
   };
 
@@ -34,6 +34,9 @@ export default function Login({ isOpen, onClose }) {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    
+    // Prevent double submission
+    if (loading) return;
     
     if (!validateEnrollmentNumber(enrollmentNumber)) {
       setError('Enrollment number must be 10 digits (Sector 62) or 12 digits (Sector 128)');
@@ -67,8 +70,8 @@ export default function Login({ isOpen, onClose }) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
         <h1>Welcome to PYQJIIT!</h1>
-        <pre>Enter your <b>JIIT enrollment number.</b> A login link will be sent to your gmail.</pre>
-        <pre><b>Why?</b><br/>This is just a precautionary measure to inhibit bad actors from spam uploading random stuff.</pre>
+        <pre>Enter your <b>JIIT enrollment number.</b> A login link will be sent to your Gmail inbox.</pre>
+        <pre><b>Why?</b><br/>This prevents spam and insures only JIIT students can upload papers.</pre>
 
         {magicLinkSent ? (
           <p style={{opacity: 0.7}}>

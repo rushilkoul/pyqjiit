@@ -301,7 +301,7 @@ export default function PapersList({ user }) {
       </div>
     )}
     <div className="main-container">
-      <h2>Available Papers</h2>
+      <h2>Available Papers <span className="filtered-papers-counter">{filteredPapers.length}</span></h2> 
       
       {papers.length === 0 ? (
         <p>No papers uploaded yet.</p>
@@ -359,7 +359,7 @@ export default function PapersList({ user }) {
                       rel="noopener noreferrer"
                       className="view-button"
                     >
-                      View Paper
+                      Open
                     </a>
                     {user && user.id === uploaded_by_id && (
                       <button 

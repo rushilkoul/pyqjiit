@@ -12,13 +12,20 @@ export default function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setUser(data?.session?.user));
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
-      setUser(session?.user ?? null);
+    let mounted = true;
+    
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) setUser(data?.session?.user ?? null);
     });
 
-    return () => listener?.subscription?.unsubscribe();
+    const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+      if (mounted) setUser(session?.user ?? null);
+    });
+
+    return () => {
+      mounted = false;
+      listener?.subscription?.unsubscribe();
+    };
   }, []);
 
   async function handleSignOut() {
@@ -44,7 +51,7 @@ export default function App() {
           onClick={handleUploadButtonClick}
           className="upload-button"
         >
-          {user ? 'Upload Question Paper' : 'Sign in to Upload Question Papers'}
+          {user ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
         <PapersList />
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />

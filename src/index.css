@@ -1,46 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
 
 :root {
-  --bg-color: #faf8ff;
-  --card-bg: #F9FAFB;
-  --text-color: #111827;
-  --border-color: #ededed;
-  --hover-border-color: #9ca3af;
-  --focus-border-color: #6b7280;
-  --button-bg: #7f63e5;
-  --button-hover: #694fc4;
-  --button-active: #5e48ae;
-  --button-text: #F9FAFB;
+  --bg-color: #faf9fc;
+  --card-bg: #ffffff;
+  --text-color: #1a1a1a;
+  --border-color: #e8e4ed;
+  --hover-border-color: #a89db8;
+  --focus-border-color: #7c6f8a;
+  --button-bg: #2d2438;
+  --button-hover: #3d3248;
+  --button-active: #1d1428;
+  --button-text: #fafafa;
   --select-bg: white;
-  --option-hover-bg: #f3f4f6;
-  --option-selected-bg: #111827;
+  --option-hover-bg: #f8f5fb;
+  --option-selected-bg: #2d2438;
   --option-selected-color: white;
-  --success-color: #00990d;
-  --box-shadow-color: #b9b4cd;
-  --frosted-bg: #ffffff46;
-  --frosted-border: #e7e7e7;
+  --success-color: #22c55e;
+  --box-shadow-color: #d8d0e0;
+  --frosted-bg: rgba(252, 250, 255, 0.75);
+  --frosted-border: #e8e4ed;
+  --paper-details-bg: #f6f4f9;
+  --accent-color: #7c5cbf;
 }
 
 .dark-theme {
-  --bg-color: #010003;
-  --card-bg: #020202;
-  --text-color: #f9fafb;
-  --border-color: #131313;
-  --hover-border-color: #6b7280;
-  --focus-border-color: #cbcbcb;
-  --button-bg: #7f63e5;
-  --button-hover: #b5a1ff;
-  --button-active: #6547d1;
-  --button-text: #F9FAFB;
-  --select-bg: #1a1a1a;
-  --option-hover-bg: #0f0f0f;
-  --option-selected-bg: #e7e7e7;
-  --option-selected-color: #111827;
-  --success-color: #8dff97;
-  --box-shadow-color: #0e0823;
-  --frosted-bg: #0e0e0ed9;
-  --frosted-border: #1a1a1a;
+  --bg-color: #0c0a0f;
+  --card-bg: #151318;
+  --text-color: #f5f3f7;
+  --border-color: #2a2630;
+  --hover-border-color: #4a4358;
+  --focus-border-color: #8a7da0;
+  --button-bg: #f5f3f7;
+  --button-hover: #e5e2e8;
+  --button-active: #d4d0d8;
+  --button-text: #0c0a0f;
+  --select-bg: #151318;
+  --option-hover-bg: #1c1920;
+  --option-selected-bg: #f5f3f7;
+  --option-selected-color: #0c0a0f;
+  --success-color: #4ade80;
+  --box-shadow-color: #000000;
+  --frosted-bg: rgba(12, 10, 15, 0.88);
+  --frosted-border: #2a2630;
+  --paper-details-bg: #1c1920;
+  --accent-color: #a78bfa;
 }
 
 * {
@@ -58,7 +62,7 @@ body {
 }
 
 pre {
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
   opacity: 0.7;
   white-space: pre-wrap;
@@ -79,16 +83,23 @@ pre {
   align-items: center;
   gap: .5rem;
   flex: 1;
+  padding-top: calc(86px + 2rem);
 }
 
 .navbar {
+  position: fixed;
+  z-index: 999;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--bg-color);
   border-bottom: 1px solid var(--border-color);
   transition: background 0.3s ease, border-color 0.3s ease;
+
+  background: var(--frosted-bg);
+  backdrop-filter: blur(15px);
+  /* box-shadow: 0px 8px 17px var(--box-shadow-color); */
 }
 
 .navbar > .navbar-brand div> h1 {
@@ -165,6 +176,10 @@ pre {
 
 .dark-theme .user-dropdown {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+button:focus {
+  outline: none !important;
 }
 
 .user-info {
@@ -246,17 +261,27 @@ pre {
   justify-content: center;
 }
 
+
+.theme-toggle:hover {
+  color: var(--button-hover);
+  transform: rotate(20deg);
+}
 .upload-button {
   background: var(--button-bg);
+  backdrop-filter: blur(10px);
   color: var(--button-text);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  border: none; 
+  font-weight: 600;
+  padding: 1rem 1.75rem;
+  border-radius: 1rem;
   cursor: pointer;
-  align-self: flex-end;
   transition: all 0.2s ease;
   position: fixed;
   z-index: 999;
+
+  bottom: 2rem;
+  right: 2rem;
 }
 
 .upload-button:hover {
@@ -299,7 +324,7 @@ pre {
   border: none;
   padding: 0;
   cursor: pointer;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.9rem;
   transition: opacity 0.2s ease;
   display: flex;
@@ -315,7 +340,7 @@ pre {
   min-height: 200px;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: 1.25rem;
   flex: 1;
 }
 form {
@@ -349,7 +374,7 @@ form select {
 }
 
 form select {
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
   font-size: 1.1rem;
   cursor: pointer;
@@ -369,19 +394,19 @@ form select option {
   background: var(--select-bg);
   color: var(--text-color);
   padding: 0.5rem;
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 form input[type="email"] {
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
   font-size: 1.1rem;
 }
 
 form input[type="text"] {
-  font-family: 'Inconsolata', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 form input[type="text"]:focus,
@@ -526,7 +551,7 @@ form button[type="submit"]:active {
 .responses-container {
   display: flex;
   flex-wrap: wrap;
-  gap: .75rem;
+  gap: 1rem;
   justify-content: space-evenly;
   padding-top: 1rem;
   width: 100%;
@@ -612,20 +637,20 @@ form button[type="submit"]:active {
   border-radius: 0.5rem;
   font-size: 0.75rem;
   font-weight: 600;
-  font-family: "Inconsolata", monospace;
+  font-family: "JetBrains Mono", monospace;
   line-height: 1;
 }
 
 .badge.subject {
-  background: #ece8ff;
-  color: #7f63e5;
-  border: 1px solid #7f63e5;
+  background: #f0f7ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
 }
 
 .dark-theme .badge.subject {
-  background: #150f31;
-  color: #c3b3ff;
-  border: 1px solid #7f63e5;
+  background: #172033;
+  color: #93c5fd;
+  border: 1px solid #1e3a5f;
 }
 
 .badge.verified {
@@ -655,11 +680,14 @@ form button[type="submit"]:active {
   flex-direction: column;
   gap: 0.5rem;
   flex-grow: 1;
+  background-color: var(--paper-details-bg);
+  padding: 1rem;
+  border-radius: .75rem;
+  font-family: "JetBrains Mono", monospace;
 }
-
 .paper-details p {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   line-height: 1.4;
 }
 
@@ -685,6 +713,7 @@ form button[type="submit"]:active {
   transition: all 0.2s ease;
   flex: 1;
   text-align: center;
+  margin-bottom: 0 !important;
 }
 
 .view-button:hover {
@@ -1118,17 +1147,6 @@ form button[type="submit"]:active {
     width: 40%;
   }
 
-  .navbar {
-    position: fixed;
-    z-index: 999;
-    width: 100%;
-    background: var(--frosted-bg);
-    backdrop-filter: blur(6px);
-    box-shadow: 0px 8px 17px var(--box-shadow-color);
-  }
-  .main-content {
-    padding-top: calc(86px + 2rem);
-  }
 }
 
 .dev-message {
@@ -1166,7 +1184,7 @@ form button[type="submit"]:active {
 .dev-message-version {
   display: block;
   font-size: 0.75rem;
-  font-family: 'Inconsolata', sans-serif;
+  font-family: 'JetBrains Mono', sans-serif;
   color: var(--text-color);
   opacity: 0.6;
   font-weight: 600;
@@ -1228,4 +1246,22 @@ form button[type="submit"]:active {
   .dev-message-body {
     font-size: 0.85rem;
   }
+}
+
+
+.filtered-papers-counter {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.7;
+  font-weight: 400;
+  background-color: var(--border-color);
+  padding: .25rem .75rem;
+  border-radius: 0.75rem;
+}
+
+.main-container > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
