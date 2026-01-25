@@ -6,6 +6,8 @@ import PapersList from './components/PapersList';
 import Navbar from './components/Navbar';
 import DeveloperMessage from './components/DeveloperMessage';
 
+const DEV_MODE = import.meta.env.DEV;
+
 export default function App() {
   const [user, setUser] = useState(null);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -36,12 +38,14 @@ export default function App() {
   }
 
   const handleUploadButtonClick = () => {
-    if (user) {
+    if (user || DEV_MODE) {
       setIsUploadModalOpen(true);
     } else {
       setIsLoginModalOpen(true);
     }
   };
+
+  const canUpload = user || DEV_MODE;
 
   return (
     <div className="main">
@@ -51,7 +55,7 @@ export default function App() {
           onClick={handleUploadButtonClick}
           className="upload-button"
         >
-          {user ? 'Upload Question Paper' : 'Sign in to Upload'}
+          {canUpload ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
         <PapersList />
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
@@ -63,7 +67,7 @@ export default function App() {
           onClick={handleUploadButtonClick}
           className="mobile-upload-button"
         >
-          {user ? 'Upload Question Paper' : 'Sign in to Upload'}
+          {canUpload ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
       )}
       

@@ -1,94 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
+import SUBJECTS_DATA from '../data/subjects.json';
 
 const ALL_YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
+const ALL_BRANCHES = ['ECE', 'CSEIT', 'BT', 'MNC', 'RAI'];
 
-const SUBJECTS_BY_YEAR_SEMESTER = {
-  '1st Year': {
-    'Semester 1': [
-      'SDF - I',
-      'SDF Lab - I',
-      'English',
-      'Maths - I',
-      'Basic Electronics',
-      'Basic Electronics Lab',
-      'Physics - I',
-      'Physics Lab-I',
-      'EDD - I',
-      'Workshop'
-    ],
-    'Semester 2': [
-      'SDF - II',
-      'SDF Lab - II',
-      'Maths - II',
-      'Physics - II',
-      'Physics Lab - II',
-      'Workshop',
-      'UHV',
-      'LSPC Lab'
-    ]
-  },
-  '2nd Year': {
-    'Semester 3': [
-      'Theoretical Foundations of Computer Science',
-      'Data Structures',
-      'Database Systems & Web',
-      'Probability and Random Processes',
-      'Probability and Statistics',
-      'Economics',
-      'Data Structure Lab',
-      'Database System & Web Lab'
-    ],
-    'Semester 4': [
-      'Design and Analysis of Algorithms',
-      'Object Oriented Programming',
-      'Computer Networks',
-      'Software Engineering',
-      'Discrete Mathematics',
-      'Algorithms Lab',
-      'OOP Lab',
-      'Networks Lab'
-    ]
-  },
-  '3rd Year': {
-    'Semester 5': [
-      'Computer Networks and Internet of Things',
-      'Fundamentals of Machine Learning',
-      'Object Oriented Analysis and Design Using JAVA',
-      'Computer Organization and Architecture',
-      'Computer Organization and Architecture Lab',
-      'Operating System and System Programming Lab',
-      'Open Source Software Lab',
-      'Information Security Lab'
-    ],
-    'Semester 6': [
-      'Compiler Design',
-      'Operating Systems',
-      'Database Management Systems',
-      'Web Technologies',
-      'Artificial Intelligence',
-      'Compiler Lab',
-      'OS Lab',
-      'Web Development Lab'
-    ]
-  },
-  '4th Year': {
-    'Semester 7': [
-      'Major Project Part - 1 (CSE)',
-      'Summer Training & Viva'
-    ],
-    'Semester 8': [
-      'Major Project Part - 2 (CSE)',
-      'Internship & Seminar'
-    ]
+const getAllSubjects = () => {
+  const subjects = new Set();
+  for (const yearData of Object.values(SUBJECTS_DATA)) {
+    for (const branchData of Object.values(yearData)) {
+      for (const semesterSubjects of Object.values(branchData)) {
+        semesterSubjects.forEach(s => subjects.add(s));
+      }
+    }
   }
+  return [...subjects].sort();
 };
 
-const ALL_SUBJECTS = [...new Set(
-  Object.values(SUBJECTS_BY_YEAR_SEMESTER)
-    .flatMap(yearData => Object.values(yearData))
-    .flat()
-)].sort();
+const ALL_SUBJECTS = getAllSubjects();
 
 export default function PapersList({ user }) {
   const [papers, setPapers] = useState([]);
@@ -96,6 +25,7 @@ export default function PapersList({ user }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [availableSubjects, setAvailableSubjects] = useState([]);
   const [studentNames, setStudentNames] = useState({});
@@ -124,32 +54,60 @@ export default function PapersList({ user }) {
       filtered = filtered.filter(paper => paper.year === selectedYear);
     }
 
+    if (selectedBranch) {
+      filtered = filtered.filter(paper => paper.branch === selectedBranch || paper.branch === '*');
+    }
+
     if (selectedSubject) {
       filtered = filtered.filter(paper => paper.subject === selectedSubject);
     }
 
     setFilteredPapers(filtered);
-  }, [papers, selectedYear, selectedSubject]);
+  }, [papers, selectedYear, selectedBranch, selectedSubject]);
 
   useEffect(() => {
-    if (selectedYear) {
-      const yearData = SUBJECTS_BY_YEAR_SEMESTER[selectedYear];
-      const subjectsForYear = yearData ? Object.values(yearData).flat() : [];
-      setAvailableSubjects(subjectsForYear);
-      
-      if (selectedSubject && !subjectsForYear.includes(selectedSubject)) {
-        setSelectedSubject('');
+    const yearData = selectedYear ? SUBJECTS_DATA[selectedYear] : null;
+    
+    if (!yearData) {
+      setAvailableSubjects(ALL_SUBJECTS);
+      return;
+    }
+    
+    const subjectsForFilter = new Set();
+    
+    if (selectedYear === '1st Year') {
+      const branchData = yearData['*'];
+      if (branchData) {
+        for (const semesterSubjects of Object.values(branchData)) {
+          semesterSubjects.forEach(s => subjectsForFilter.add(s));
+        }
+      }
+    } else if (selectedBranch && selectedBranch !== '*') {
+      const branchData = yearData[selectedBranch];
+      if (branchData) {
+        for (const semesterSubjects of Object.values(branchData)) {
+          semesterSubjects.forEach(s => subjectsForFilter.add(s));
+        }
       }
     } else {
-      setAvailableSubjects(ALL_SUBJECTS);
+      for (const branchData of Object.values(yearData)) {
+        for (const semesterSubjects of Object.values(branchData)) {
+          semesterSubjects.forEach(s => subjectsForFilter.add(s));
+        }
+      }
     }
-  }, [selectedYear, selectedSubject]);
+    
+    const subjectsList = [...subjectsForFilter].sort();
+    setAvailableSubjects(subjectsList);
+    
+    if (selectedSubject && !subjectsList.includes(selectedSubject)) {
+      setSelectedSubject('');
+    }
+  }, [selectedYear, selectedBranch, selectedSubject]);
 
   useEffect(() => {
     if (papers.length > 0) {
       const uniqueEnrollments = [...new Set(papers.map(p => p.uploaded_by).filter(Boolean))];
-      
-      console.log(`Found ${uniqueEnrollments.length} unique uploaders:`, uniqueEnrollments);
       
       uniqueEnrollments.forEach(enrollment => {
         getStudentName(enrollment);
@@ -271,6 +229,20 @@ export default function PapersList({ user }) {
           </div>
           
           <div className="filter-item">
+            <span>Branch:</span>
+            <select
+              value={selectedBranch}
+              onChange={(e) => setSelectedBranch(e.target.value)}
+              className="filter-select"
+            >
+              <option value="">All</option>
+              {ALL_BRANCHES.map(branch => (
+                <option key={branch} value={branch}>{branch}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="filter-item">
             <span>Subject:</span>
             <select
               value={selectedSubject}
@@ -283,11 +255,13 @@ export default function PapersList({ user }) {
               ))}
             </select>
           </div>
+
           
-          {(selectedYear || selectedSubject) && (
+          {(selectedYear || selectedSubject || selectedBranch) && (
             <button
               onClick={() => {
                 setSelectedYear('');
+                setSelectedBranch('');
                 setSelectedSubject('');
               }}
               className="clear-filters-btn"
@@ -320,7 +294,8 @@ export default function PapersList({ user }) {
               uploaded_by_id,
               verified,
               flagged,
-              inserted_at
+              inserted_at,
+              branch
             } = paper;
             
             const { data: publicUrlData } = supabase
@@ -340,6 +315,7 @@ export default function PapersList({ user }) {
                       {subject && <span className="badge subject">{subject}</span>}
                       {verified && <span className="badge verified">✓ Verified</span>}
                       {flagged && <span className="badge flagged">⚠ Flagged</span>}
+                      {branch && <span className="badge branch">{branch === '*' ? 'All Branches' : branch}</span>}
                     </div>
                   </div>
                   
@@ -348,6 +324,7 @@ export default function PapersList({ user }) {
                     {year && !semester && <p><strong>{year}</strong></p>}
                     {batch && <p><strong>Batch(es):</strong> {batch}</p>}
                     <p><strong>Uploaded:</strong> {uploadDate} by {displayName}</p>
+
                   </div>
                   
                   <div className="paper-actions">

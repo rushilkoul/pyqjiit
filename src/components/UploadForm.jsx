@@ -2,88 +2,42 @@ import React, { useState } from 'react';
 import Modal from './Modal';
 import { supabase } from '../supabaseClient';
 import jsPDF from 'jspdf';
+import SUBJECTS_BY_YEAR_SEMESTER from '../data/subjects.json';
 
-const SUBJECTS_BY_YEAR_SEMESTER = {
-  '1st Year': {
-    'Semester 1': [
-      'SDF - I',
-      'SDF Lab - I',
-      'English',
-      'Maths - I',
-      'Basic Electronics',
-      'Basic Electronics Lab',
-      'Physics - I',
-      'Physics Lab-I',
-      'EDD - I',
-      'Workshop'
-    ],
-    'Semester 2': [
-      'SDF - II',
-      'SDF Lab - II',
-      'Chemistry Lab',
-      'Chemistry',
-      'Maths - II',
-      'Physics - II',
-      'Physics Lab - II',
-      'EDD - II',
-      'Computer System Architecture',
-      'Communication Skills Lab'
-    ]
-  },
-  '2nd Year': {
-    'Semester 3': [
-      'Theoretical Foundations of Computer Science',
-      'Data Structures',
-      'Database Systems & Web',
-      'Probability and Random Processes',
-      'Probability and Statistics',
-      'Economics',
-      'Data Structure Lab',
-      'Database System & Web Lab'
-    ],
-    'Semester 4': [
-      'Design and Analysis of Algorithms',
-      'Object Oriented Programming',
-      'Computer Networks',
-      'Software Engineering',
-      'Discrete Mathematics',
-      'Algorithms Lab',
-      'OOP Lab',
-      'Networks Lab'
-    ]
-  },
-  '3rd Year': {
-    'Semester 5': [
-      'Computer Networks and Internet of Things',
-      'Fundamentals of Machine Learning',
-      'Object Oriented Analysis and Design Using JAVA',
-      'Computer Organization and Architecture',
-      'Computer Organization and Architecture Lab',
-      'Operating System and System Programming Lab',
-      'Open Source Software Lab',
-      'Information Security Lab'
-    ],
-    'Semester 6': [
-      'Compiler Design',
-      'Operating Systems',
-      'Database Management Systems',
-      'Web Technologies',
-      'Artificial Intelligence',
-      'Compiler Lab',
-      'OS Lab',
-      'Web Development Lab'
-    ]
-  },
-  '4th Year': {
-    'Semester 7': [
-      'Major Project Part - 1 (CSE)',
-      'Summer Training & Viva'
-    ],
-    'Semester 8': [
-      'Major Project Part - 2 (CSE)',
-      'Internship & Seminar'
-    ]
+
+// TODO: Sector 128 branch prefixes
+const BRANCH_BY_PREFIX = {
+  'A': 'ECE',
+  'B': 'CSEIT',
+  'C': 'BT',
+  'G': 'MNC',
+  'D': 'RAI',
+};
+
+const getBranchFromBatch = (batchValue) => {
+  if (!batchValue) return '*';
+  
+  const batches = batchValue
+    .split(/[,\s]+/)
+    .map(b => b.trim().toUpperCase())
+    .filter(b => b.length > 0);
+  
+  if (batches.length === 0) return '*';
+  
+  const detectedBranches = new Set();
+  
+  for (const batch of batches) {
+    const prefix = batch.charAt(0);
+    const branch = BRANCH_BY_PREFIX[prefix];
+    if (branch) {
+      detectedBranches.add(branch);
+    }
   }
+  
+  if (detectedBranches.size === 1) {
+    return [...detectedBranches][0];
+  }
+  return '*';
 };
 
 export default function UploadForm({ user, isOpen, onClose }) {
@@ -92,6 +46,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
   const [year, setYear] = useState('');
   const [semester, setSemester] = useState('');
   const [batch, setBatch] = useState('');
+  const [branch, setBranch] = useState('*');
   const [subject, setSubject] = useState('');
   const [uploading, setUploading] = useState(false);
   const [converting, setConverting] = useState(false);
@@ -109,6 +64,9 @@ export default function UploadForm({ user, isOpen, onClose }) {
     setYear(selectedYear);
     setSemester('');
     setSubject('');
+    if (selectedYear === '1st Year') {
+      setBranch('*');
+    }
   };
 
   const handleSemesterChange = (e) => {
@@ -117,12 +75,47 @@ export default function UploadForm({ user, isOpen, onClose }) {
     setSubject('');
   };
 
+  const handleBatchChange = (e) => {
+    const batchValue = e.target.value;
+    setBatch(batchValue);
+    if (year !== '1st Year') {
+      const detectedBranch = getBranchFromBatch(batchValue);
+      setBranch(detectedBranch);
+    }
+  };
+
   const getAvailableSemesters = () => {
-    return year ? Object.keys(SUBJECTS_BY_YEAR_SEMESTER[year] || {}) : [];
+    if (!year) return [];
+    const yearData = SUBJECTS_BY_YEAR_SEMESTER[year];
+    if (!yearData) return [];
+
+    if (year === '1st Year') {
+      return Object.keys(yearData['*'] || {});
+    }
+    
+    const branchKey = branch !== '*' ? branch : Object.keys(yearData)[0];
+    return Object.keys(yearData[branchKey] || {});
   };
 
   const getAvailableSubjects = () => {
-    return (year && semester) ? SUBJECTS_BY_YEAR_SEMESTER[year]?.[semester] || [] : [];
+    if (!year || !semester) return [];
+    const yearData = SUBJECTS_BY_YEAR_SEMESTER[year];
+    if (!yearData) return [];
+    
+    if (year === '1st Year') {
+      return yearData['*']?.[semester] || [];
+    }
+    
+    if (branch === '*') {
+      const allSubjects = new Set();
+      for (const branchData of Object.values(yearData)) {
+        const subjects = branchData[semester] || [];
+        subjects.forEach(s => allSubjects.add(s));
+      }
+      return [...allSubjects];
+    }
+    
+    return yearData[branch]?.[semester] || [];
   };
 
   const convertImagesToPDF = async (imageFiles) => {
@@ -233,6 +226,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
           year,
           semester,
           batch: batch.trim() || null,
+          branch: branch || null,
           subject: subject.trim(),
         }]);
 
@@ -244,6 +238,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
       setYear('');
       setSemester('');
       setBatch('');
+      setBranch('*');
       setSubject('');
 
       setTimeout(() => {
@@ -329,6 +324,37 @@ export default function UploadForm({ user, isOpen, onClose }) {
           <p className="field-locked">Year and semester locked after subject selection</p>
         )}
 
+        
+        <div className="form-row">
+          <div className="form-field">
+            <label>Batch (Optional):</label>
+            <input
+              type="text"
+              value={batch}
+              onChange={handleBatchChange}
+              disabled={uploading || converting}
+              placeholder="e.g., A1, B5, C2, G3, D1"
+            />
+          </div>
+
+          <div className="form-field">
+            <label>Branch:</label>
+            <select
+              value={branch}
+              onChange={e => setBranch(e.target.value)}
+              disabled={uploading || converting}
+            >
+              <option value="*">All Branches (*)</option>
+              <option value="ECE">ECE</option>
+              <option value="CSEIT">CSEIT</option>
+              <option value="BT">BT</option>
+              <option value="MNC">MNC</option>
+              <option value="RAI">RAI</option>
+            </select>
+            {branch && branch !== '*' && <small className="branch-hint">Detected: {branch}</small>}
+          </div>
+        </div>
+
         <div>
           <label>Subject:</label>
           <select
@@ -347,16 +373,6 @@ export default function UploadForm({ user, isOpen, onClose }) {
           </select>
         </div>
 
-        <div>
-          <label>Batch (Optional):</label>
-          <input
-            type="text"
-            value={batch}
-            onChange={e => setBatch(e.target.value)}
-            disabled={uploading || converting}
-            placeholder="e.g., F11, F10, F12"
-          />
-        </div>
         <div>
           <label>Select Files:</label>
           <input

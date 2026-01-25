@@ -653,6 +653,18 @@ form button[type="submit"]:active {
   border: 1px solid #1e3a5f;
 }
 
+.badge.branch {
+  background: #fefce8;
+  color: #a16207;
+  border: 1px solid #facc15;
+}
+
+.dark-theme .badge.branch {
+  background: #422006;
+  color: #fde047;
+  border: 1px solid #a16207;
+}
+
 .badge.verified {
   background: #dcfce7;
   color: #166534;
@@ -777,6 +789,7 @@ form button[type="submit"]:active {
 }
 
 .field-locked {
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.75rem;
   color: #6b7280;
   margin-top: 0.25rem;
@@ -785,6 +798,18 @@ form button[type="submit"]:active {
 
 .dark-theme .field-locked {
   color: #9ca3af;
+}
+
+.branch-hint {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--accent-color);
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.dark-theme .branch-hint {
+  color: var(--accent-color);
 }
 
 .mobile-signout-button {
@@ -983,7 +1008,9 @@ form button[type="submit"]:active {
   border-radius: 0.25rem;
   background: var(--select-bg);
   color: var(--text-color);
-  font-size: 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 400;
   cursor: pointer;
 }
 
@@ -1123,6 +1150,8 @@ form button[type="submit"]:active {
 @media (max-width: 480px) {
   .filters-container {
     margin-bottom: 0.75rem;
+    padding: 1rem;
+    padding-top: 0;
   }
   
   .filters-container h3 {
@@ -1133,6 +1162,10 @@ form button[type="submit"]:active {
   .filter-select {
     padding: 0.875rem;
     border-radius: 0.375rem;
+  }
+  .main-content {
+    padding: 1rem;
+    padding-top: calc(86px + 2rem);
   }
 }
 

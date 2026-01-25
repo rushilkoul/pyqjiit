@@ -1,0 +1,138 @@
+{
+  "1st Year": {
+    "*": {
+      "Semester 1": [
+        "SDF - I",
+        "SDF Lab - I",
+        "English",
+        "Maths - I",
+        "Basic Electronics",
+        "Basic Electronics Lab",
+        "Physics - I",
+        "Physics Lab-I",
+        "EDD - I",
+        "Workshop"
+      ],
+      "Semester 2": [
+        "SDF - II",
+        "SDF Lab - II",
+        "Chemistry Lab",
+        "Chemistry",
+        "Maths - II",
+        "Physics - II",
+        "Physics Lab - II",
+        "EDD - II",
+        "Computer System Architecture",
+        "Communication Skills Lab"
+      ]
+    }
+  },
+  "2nd Year": {
+    "ECE": {
+      "Semester 3": [],
+      "Semester 4": []
+    },
+    "CSEIT": {
+      "Semester 3": [
+        "Theoretical Foundations of Computer Science",
+        "Data Structures",
+        "Database Systems & Web",
+        "Probability and Random Processes",
+        "Probability and Statistics",
+        "Economics",
+        "Data Structure Lab",
+        "Database System & Web Lab"
+      ],
+      "Semester 4": [
+        "Design and Analysis of Algorithms",
+        "Object Oriented Programming",
+        "Computer Networks",
+        "Software Engineering",
+        "Discrete Mathematics",
+        "Algorithms Lab",
+        "OOP Lab",
+        "Networks Lab"
+      ]
+    },
+    "BT": {
+      "Semester 3": [],
+      "Semester 4": []
+    },
+    "MNC": {
+      "Semester 3": [],
+      "Semester 4": []
+    },
+    "RAI": {
+      "Semester 3": [],
+      "Semester 4": []
+    }
+  },
+  "3rd Year": {
+    "ECE": {
+      "Semester 5": [],
+      "Semester 6": []
+    },
+    "CSEIT": {
+      "Semester 5": [
+        "Computer Networks and Internet of Things",
+        "Fundamentals of Machine Learning",
+        "Object Oriented Analysis and Design Using JAVA",
+        "Computer Organization and Architecture",
+        "Computer Organization and Architecture Lab",
+        "Operating System and System Programming Lab",
+        "Open Source Software Lab",
+        "Information Security Lab"
+      ],
+      "Semester 6": [
+        "Compiler Design",
+        "Operating Systems",
+        "Database Management Systems",
+        "Web Technologies",
+        "Artificial Intelligence",
+        "Compiler Lab",
+        "OS Lab",
+        "Web Development Lab"
+      ]
+    },
+    "BT": {
+      "Semester 5": [],
+      "Semester 6": []
+    },
+    "MNC": {
+      "Semester 5": [],
+      "Semester 6": []
+    },
+    "RAI": {
+      "Semester 5": [],
+      "Semester 6": []
+    }
+  },
+  "4th Year": {
+    "ECE": {
+      "Semester 7": [],
+      "Semester 8": []
+    },
+    "CSEIT": {
+      "Semester 7": [
+        "Major Project Part - 1 (CSE)",
+        "Summer Training & Viva"
+      ],
+      "Semester 8": [
+        "Major Project Part - 2 (CSE)",
+        "Internship & Seminar"
+      ]
+    },
+    "BT": {
+      "Semester 7": [],
+      "Semester 8": []
+    },
+    "MNC": {
+      "Semester 7": [],
+      "Semester 8": []
+    },
+    "RAI": {
+      "Semester 7": [],
+      "Semester 8": []
+    }
+  }
+}
