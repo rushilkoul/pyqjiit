@@ -22,6 +22,8 @@
   --frosted-border: #e8e4ed;
   --paper-details-bg: #f6f4f9;
   --accent-color: #7c5cbf;
+  --error-color: #dc2626;
+  --error-bg: #ffe5e5;
 }
 
 .dark-theme {
@@ -45,6 +47,8 @@
   --frosted-border: #2a2630;
   --paper-details-bg: #1c1920;
   --accent-color: #a78bfa;
+  --error-color: #f87171;
+  --error-bg: #280000;
 }
 
 * {
@@ -1297,4 +1301,14 @@ form button[type="submit"]:active {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-top: .75rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  background-color: var(--error-bg);
+  padding: .5rem .5rem;
+  border-radius: 0.25rem;
 }
