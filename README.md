@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS public.papers (
   uploaded_by_id uuid NOT NULL,
   verified boolean DEFAULT false,
   flagged boolean DEFAULT false,
+  branch text,
   inserted_at timestamptz DEFAULT now(),
   semester text,
   CONSTRAINT check_valid_semester CHECK (
