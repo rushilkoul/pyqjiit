@@ -29,19 +29,48 @@
   },
   "2nd Year": {
     "ECE": {
-      "Semester 3": [],
-      "Semester 4": []
+      "Semester 3": [
+        "Economics",
+        "Probability and Random Processes",
+        "Signals & Systems",
+        "Digital Circuit Design",
+        "Signals & Systems Lab",
+        "Digital Circuit Design Lab",
+        "Electronic Devices and Circuits",
+        "Electronic Devices and Circuits Lab",
+        "Environmental Studies"
+      ],
+      "Semester 4": [
+        "Analogue Electronics",
+        "Digital Signal Processing",
+        "Analogue Electronics Lab",
+        "Telecommunication Networks",
+        "Digital Signal Processing Lab",
+        "Analog and Digital Communication",
+        "Analog and Digital Communication Lab",
+
+        "Fundamentals of Embedded Systems",
+        "Introduction to Microfabrication Technology",
+        "Introduction to Microfabrication Lab",
+        "Introduction to VLSI Lifecycle",
+        "Micro Project-2",
+        "Analog Electronic Circuits",
+        "Discrete Signal Processing",
+        "Communication Engineering",
+        "Analog Electronic Circuits Lab"
+      ]
     },
     "CSEIT": {
       "Semester 3": [
-        "Theoretical Foundations of Computer Science",
         "Data Structures",
-        "Database Systems & Web",
-        "Probability and Random Processes",
-        "Probability and Statistics",
         "Economics",
-        "Data Structure Lab",
-        "Database System & Web Lab"
+        "Data Structures Lab",
+        "Theory of Computation",
+        "Database Management Systems",
+        "Database Management Systems Lab",
+        "Unix Programming Lab",
+        "Object Oriented Programming using Java",
+        "Mathematical Foundations for Artificial Intelligence and Data Science"
       ],
       "Semester 4": [
         "Design and Analysis of Algorithms",
@@ -59,8 +88,26 @@
       "Semester 4": []
     },
     "MNC": {
-      "Semester 3": [],
-      "Semester 4": []
+      "Semester 3": [
+        "Data Structures",
+        "Database Systems and Web",
+        "Economics",
+        "Data Structures Lab",
+        "Database Systems and Web Lab",
+        "Object Oriented Programming using Java",
+        "Mathematical Foundations of Probability and Statistics",
+        "Discrete Mathematical Structures",
+        "Environmental Studies"
+      ],
+      "Semester 4": [
+        "Design and Analysis of Algorithms",
+        "Artificial Intelligence and Machine Learning",
+        "Design and Analysis of Algorithms Lab",
+        "Artificial Intelligence and Machine Learning Lab",
+        "Theory and Applications of Linear Algebra",
+        "Numerical Methods and Computation",
+        "Numerical Methods and Computation Lab"
+      ]
     },
     "RAI": {
       "Semester 3": [],
