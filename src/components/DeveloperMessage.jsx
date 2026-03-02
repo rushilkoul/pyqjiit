@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-const CURRENT_VERSION = 'v0.3';
+const CURRENT_VERSION = 'v0.3.1';
 const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "PYQJIIT now has a new domain! Unfortunately logged in users will need to sign in again. Apologies for the inconvenience. If you experience any issues, reach out on GitHub.",
-  type: "update"
+  message: "PYQJIIT has had connectivity issues recently. This is due to a nationwide ISP block on the backend provider (Supabase) under Section 69A of the IT Act. Working on a fix, apologies for the inconvenience :(",
+  type: "alert"
 };
 
 export default function DeveloperMessage() {
@@ -32,6 +32,7 @@ export default function DeveloperMessage() {
       case 'fix': return '🐛';
       case 'feature': return '✨';
       case 'update': return '📢';
+      case 'alert': return '⚠️';
       default: return '💬';
     }
   };
