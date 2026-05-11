@@ -10,20 +10,18 @@
         "Basic Electronics Lab",
         "Physics - I",
         "Physics Lab-I",
-        "EDD - I",
+        "AutoCAD",
         "Workshop"
       ],
       "Semester 2": [
         "SDF - II",
         "SDF Lab - II",
-        "Chemistry Lab",
-        "Chemistry",
         "Maths - II",
         "Physics - II",
         "Physics Lab - II",
-        "EDD - II",
-        "Computer System Architecture",
-        "Communication Skills Lab"
+        "AutoCAD",
+        "Workshop",
+        "Universal Human Values"
       ]
     }
   },
@@ -33,12 +31,11 @@
         "Economics",
         "Probability and Random Processes",
         "Signals & Systems",
-        "Digital Circuit Design",
-        "Signals & Systems Lab",
-        "Digital Circuit Design Lab",
-        "Electronic Devices and Circuits",
-        "Electronic Devices and Circuits Lab",
-        "Environmental Studies"
+        "Numerical Techniques",
+        "Electronic Devices",
+        "Electronic Devices Lab",
+        "Digital Logic and Circuit Design",
+        "Digital Logic and Circuit Design Lab"
       ],
       "Semester 4": [
         "Analogue Electronics",

@@ -5,15 +5,30 @@ import UploadForm from './components/UploadForm';
 import PapersList from './components/PapersList';
 import Navbar from './components/Navbar';
 import DeveloperMessage from './components/DeveloperMessage';
+import Onboarding from './components/Onboarding';
 
 const DEV_MODE = import.meta.env.DEV;
+const ONBOARDING_KEY = 'onboarding-completed-v1';
+const PREFERENCES_KEY = 'user-preferences-v1';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [userPreferences, setUserPreferences] = useState(null);
 
   useEffect(() => {
+    const isOnboardingCompleted = localStorage.getItem(ONBOARDING_KEY) === 'true';
+    if (!isOnboardingCompleted) {
+      setShowOnboarding(true);
+    } else {
+      const saved = localStorage.getItem(PREFERENCES_KEY);
+      if (saved) {
+        setUserPreferences(JSON.parse(saved));
+      }
+    }
+
     let mounted = true;
     
     supabase.auth.getSession().then(({ data }) => {
@@ -37,6 +52,18 @@ export default function App() {
     }
   }
 
+  const handleOnboardingComplete = (preferences) => {
+    setUserPreferences(preferences);
+    setShowOnboarding(false);
+  };
+
+  const handleResetPreferences = () => {
+    localStorage.removeItem(ONBOARDING_KEY);
+    localStorage.removeItem(PREFERENCES_KEY);
+    setShowOnboarding(true);
+    setUserPreferences(null);
+  };
+
   const handleUploadButtonClick = () => {
     if (user || DEV_MODE) {
       setIsUploadModalOpen(true);
@@ -57,7 +84,7 @@ export default function App() {
         >
           {canUpload ? 'Upload Question Paper' : 'Sign in to Upload'}
         </button>
-        <PapersList />
+        <PapersList preferences={userPreferences} onResetPreferences={handleResetPreferences} />
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         <UploadForm isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} user={user} />
       </main>
@@ -72,6 +99,7 @@ export default function App() {
       )}
       
       <DeveloperMessage />
+      <Onboarding isOpen={showOnboarding} onComplete={handleOnboardingComplete} />
       
       <footer className="footer">
         <p>made with 💜 by rushil</p>

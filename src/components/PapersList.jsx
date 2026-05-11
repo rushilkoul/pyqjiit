@@ -19,18 +19,27 @@ const getAllSubjects = () => {
 
 const ALL_SUBJECTS = getAllSubjects();
 
-export default function PapersList({ user }) {
+export default function PapersList({ user, preferences, onResetPreferences }) {
   const [papers, setPapers] = useState([]);
   const [filteredPapers, setFilteredPapers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState('');
+  const [selectedSemester, setSelectedSemester] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
   const [availableSubjects, setAvailableSubjects] = useState([]);
   const [studentNames, setStudentNames] = useState({});
   const [pillIndicator, setPillIndicator] = useState({ width: 0, left: 0 });
   const pillRefs = useRef([]);
+
+  useEffect(() => {
+    if (preferences) {
+      setSelectedYear(preferences.year);
+      setSelectedSemester(preferences.semester);
+      setSelectedBranch(preferences.branch);
+    }
+  }, [preferences]);
 
   useEffect(() => {
     fetchPapers();
@@ -54,6 +63,10 @@ export default function PapersList({ user }) {
       filtered = filtered.filter(paper => paper.year === selectedYear);
     }
 
+    if (selectedSemester !== '') {
+      filtered = filtered.filter(paper => paper.semester === `Semester ${selectedSemester}`);
+    }
+
     if (selectedBranch) {
       filtered = filtered.filter(paper => paper.branch === selectedBranch || paper.branch === '*');
     }
@@ -63,7 +76,7 @@ export default function PapersList({ user }) {
     }
 
     setFilteredPapers(filtered);
-  }, [papers, selectedYear, selectedBranch, selectedSubject]);
+  }, [papers, selectedYear, selectedSemester, selectedBranch, selectedSubject]);
 
   useEffect(() => {
     const yearData = selectedYear ? SUBJECTS_DATA[selectedYear] : null;
@@ -72,26 +85,30 @@ export default function PapersList({ user }) {
       setAvailableSubjects(ALL_SUBJECTS);
       return;
     }
-    
+
+    const semesterKey = selectedSemester !== '' ? `Semester ${selectedSemester}` : null;
     const subjectsForFilter = new Set();
     
     if (selectedYear === '1st Year') {
       const branchData = yearData['*'];
-      if (branchData) {
-        for (const semesterSubjects of Object.values(branchData)) {
+      if (branchData && semesterKey) {
+        const semesterSubjects = branchData[semesterKey];
+        if (semesterSubjects) {
           semesterSubjects.forEach(s => subjectsForFilter.add(s));
         }
       }
     } else if (selectedBranch && selectedBranch !== '*') {
       const branchData = yearData[selectedBranch];
-      if (branchData) {
-        for (const semesterSubjects of Object.values(branchData)) {
+      if (branchData && semesterKey) {
+        const semesterSubjects = branchData[semesterKey];
+        if (semesterSubjects) {
           semesterSubjects.forEach(s => subjectsForFilter.add(s));
         }
       }
-    } else {
+    } else if (semesterKey) {
       for (const branchData of Object.values(yearData)) {
-        for (const semesterSubjects of Object.values(branchData)) {
+        const semesterSubjects = branchData[semesterKey];
+        if (semesterSubjects) {
           semesterSubjects.forEach(s => subjectsForFilter.add(s));
         }
       }
@@ -103,7 +120,7 @@ export default function PapersList({ user }) {
     if (selectedSubject && !subjectsList.includes(selectedSubject)) {
       setSelectedSubject('');
     }
-  }, [selectedYear, selectedBranch, selectedSubject]);
+  }, [selectedYear, selectedSemester, selectedBranch, selectedSubject]);
 
   useEffect(() => {
     if (papers.length > 0) {
@@ -196,81 +213,21 @@ export default function PapersList({ user }) {
   return (
     <>
     {papers.length > 0 && (
-      <div className="filters-container">
-        <h3>Filters</h3>
-        <div className="filters-row">
-          <div className="filter-group">
-            <div className="pill-selector">
-              <div 
-                className="pill-indicator" 
-                style={{ 
-                  width: `${pillIndicator.width}px`, 
-                  transform: `translateX(${pillIndicator.left}px)` 
-                }}
-              />
-              <button
-                ref={el => pillRefs.current[0] = el}
-                className={`pill ${selectedYear === '' ? 'active' : ''}`}
-                onClick={() => setSelectedYear('')}
-              >
-                All
-              </button>
-              {ALL_YEARS.map((year, index) => (
-                <button
-                  key={year}
-                  ref={el => pillRefs.current[index + 1] = el}
-                  className={`pill ${selectedYear === year ? 'active' : ''}`}
-                  onClick={() => setSelectedYear(year)}
-                >
-                  Year {index + 1}
-                </button>
-              ))}
+      <>
+        {preferences && (
+          <div className="preferences-banner">
+            <div className="preferences-info">
+              <p>Showing papers for <strong>{preferences.year}</strong> {preferences.semester && `• Semester ${preferences.semester}`} {preferences.branch !== '*' && `• ${preferences.branch}`}</p>
             </div>
-          </div>
-          
-          <div className="filter-item">
-            <span>Branch:</span>
-            <select
-              value={selectedBranch}
-              onChange={(e) => setSelectedBranch(e.target.value)}
-              className="filter-select"
+            <button 
+              onClick={onResetPreferences}
+              className="change-preferences-btn"
             >
-              <option value="">All</option>
-              {ALL_BRANCHES.map(branch => (
-                <option key={branch} value={branch}>{branch}</option>
-              ))}
-            </select>
-          </div>
-
-          <div className="filter-item">
-            <span>Subject:</span>
-            <select
-              value={selectedSubject}
-              onChange={(e) => setSelectedSubject(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">All</option>
-              {availableSubjects.map(subject => (
-                <option key={subject} value={subject}>{subject}</option>
-              ))}
-            </select>
-          </div>
-
-          
-          {(selectedYear || selectedSubject || selectedBranch) && (
-            <button
-              onClick={() => {
-                setSelectedYear('');
-                setSelectedBranch('');
-                setSelectedSubject('');
-              }}
-              className="clear-filters-btn"
-            >
-              clear filters
+              Change Preferences
             </button>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </>
     )}
     <div className="main-container">
       <h2>Available Papers <span className="filtered-papers-counter">{filteredPapers.length}</span></h2> 
