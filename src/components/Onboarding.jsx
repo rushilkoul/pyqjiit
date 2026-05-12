@@ -74,7 +74,7 @@ export default function Onboarding({ isOpen, onComplete }) {
         <div className="onboarding-content">
           <div className="onboarding-header">
             <h1>Welcome to <span className="brand-highlight">PYQJIIT</span></h1>
-            <p>Pick your year and branch</p>
+            <p>pick your year and branch</p>
           </div>
 
           <div className="onboarding-body">
@@ -145,7 +145,7 @@ export default function Onboarding({ isOpen, onComplete }) {
             >
                 Continue
             </button>
-            <p className="footer-text">you can change these preferences later</p>
+            <p className="footer-text">you can change this later</p>
           </div>
         </div>
       </div>

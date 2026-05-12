@@ -223,7 +223,7 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
               onClick={onResetPreferences}
               className="change-preferences-btn"
             >
-              Change Preferences
+              Change
             </button>
           </div>
         )}

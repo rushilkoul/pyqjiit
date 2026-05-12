@@ -16,7 +16,7 @@
   --option-hover-bg: #f8f5fb;
   --option-selected-bg: #2d2438;
   --option-selected-color: white;
-  --success-color: #22c55e;
+  --success-color: #080b09;
   --box-shadow-color: #d8d0e0;
   --frosted-bg: rgba(252, 250, 255, 0.75);
   --frosted-border: #e8e4ed;
@@ -1461,15 +1461,16 @@ form button[type="submit"]:active {
 }
 
 .brand-highlight {
-  color: #7c5cbf;
+  color: var(--button-bg);
 }
 
 .onboarding-header p {
   font-size: 1.125rem;
   color: var(--text-color);
-  opacity: 0.7;
+  opacity: 0.6;
   font-weight: 400;
   font-family: 'JetBrains Mono', monospace;
+  font-weight: 200;
 }
 
 .onboarding-body {
@@ -1563,10 +1564,17 @@ form button[type="submit"]:active {
 }
 
 .semester-btn.selected {
-  background: #ffffff;
+  background: var(--button-bg);
+  border-color: #ffffff;
+  color: var(--bg-color);
+}
+
+/* .semester-btn.selected .dark-theme{
+  background: var(--text-color);
   border-color: #ffffff;
   color: #000000;
-}
+} */
+
 
 .year-card {
   font-family: 'JetBrains Mono', monospace;
@@ -1649,9 +1657,9 @@ form button[type="submit"]:active {
 }
 
 .branch-card.selected {
-  background: #ffffff;
+  background: var(--button-bg);
   border-color: #ffffff;
-  color: #000000;
+  color: var(--bg-color);
 }
 
 
@@ -1694,6 +1702,7 @@ form button[type="submit"]:active {
   font-weight: 500;
   margin: 0;
   font-family: 'JetBrains Mono', monospace;
+  font-weight: 400;
 }
 
 .onboarding-footer {
@@ -1703,8 +1712,8 @@ form button[type="submit"]:active {
 }
 
 .continue-button {
-  background: #7c5cbf;
-  color: white;
+  background: var(--button-bg);
+  color: var(--bg-color);
   border: none;
   border-radius: 1rem;
   padding: 1rem 2rem;
