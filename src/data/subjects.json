@@ -125,7 +125,18 @@
         "Computer Organization and Architecture Lab",
         "Operating System and System Programming Lab",
         "Open Source Software Lab",
-        "Information Security Lab"
+        "Information Security Lab",
+
+        "Fundamentals of Image Processing and Computer Vision",
+        "Fundamentals of Image Processing and Computer Vision Lab",
+        "Fundamentals of Graph Theory",
+        "Fundamentals of Graph Theory Lab",
+        "Fundamentals of Computing for Data Science",
+        "Fundamentals of Computing for Data Science Lab",
+        "Fundamentals of Blockchain Technology",
+        "Fundamentals of Blockchain Technology Lab",
+        "Fundamentals of Sensor Technology & Android Programming",
+        "Fundamentals of Sensor Technology & Android Programming Lab"
       ],
       "Semester 6": [
         "Compiler Design",
@@ -143,7 +154,28 @@
       "Semester 6": []
     },
     "MNC": {
-      "Semester 5": [],
+      "Semester 5": [
+        "Operating Systems",
+        "Operating Systems Lab",
+        "Full Stack Development Lab",
+        "Real and Complex Analysis",
+        "Statistical Computing using R",
+        "Indian Constitution and Traditional Knowledge",
+        "Number Theory & Cryptography with Applications",
+        "Optimization Methods & Applications",
+
+        "Fundamentals of Image Processing and Computer Vision",
+        "Fundamentals of Image Processing and Computer Vision Lab",
+        "Fundamentals of Graph Theory",
+        "Fundamentals of Graph Theory Lab",
+        "Fundamentals of Computing for Data Science",
+        "Fundamentals of Computing for Data Science Lab",
+        "Fundamentals of Blockchain Technology",
+        "Fundamentals of Blockchain Technology Lab",
+        "Fundamentals of Sensor Technology & Android Programming",
+        "Fundamentals of Sensor Technology & Android Programming Lab"
+        
+      ],
       "Semester 6": []
     },
     "RAI": {

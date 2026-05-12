@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import SUBJECTS_DATA from '../data/subjects.json';
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 const BRANCHES = ['ECE', 'CSEIT', 'BT', 'MNC', 'RAI'];
@@ -65,7 +64,6 @@ export default function Onboarding({ isOpen, onComplete }) {
   };
 
   const canContinue = selectedYear && selectedSemester !== '' && (selectedYear === '1st Year' || selectedBranch);
-  const showSemesterSelect = selectedYear;
   const showBranchSelect = selectedYear && selectedYear !== '1st Year' && selectedSemester;
 
   if (!isOpen) return null;
@@ -119,8 +117,7 @@ export default function Onboarding({ isOpen, onComplete }) {
               </div>
             </div>
 
-            {showBranchSelect && (
-              <div className="selection-section">
+            <div className={`selection-section branch-section ${showBranchSelect ? 'expanded' : 'collapsed'}`}>
                 <h2 className="section-title">Branch</h2>
                 <div className="branch-grid">
                   {BRANCHES.map((branch) => (
@@ -134,13 +131,10 @@ export default function Onboarding({ isOpen, onComplete }) {
                   ))}
                 </div>
               </div>
-            )}
 
-            {selectedYear === '1st Year' && selectedSemester && (
-              <div className="info-message">
+            <div className={`info-message ${selectedYear === '1st Year' && selectedSemester ? 'expanded' : 'collapsed'}`}>
                 <p>1st Year curriculum is common for all branches. yay!</p>
               </div>
-            )}
           </div>
 
           <div className="onboarding-footer">
