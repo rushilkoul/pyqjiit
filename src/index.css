@@ -28,7 +28,7 @@
 
 .dark-theme {
   --bg-color: #0c0a0f;
-  --card-bg: #151318;
+  --card-bg: #1c1920;
   --text-color: #f5f3f7;
   --border-color: #2a2630;
   --hover-border-color: #4a4358;
@@ -45,7 +45,7 @@
   --box-shadow-color: #000000;
   --frosted-bg: rgba(12, 10, 15, 0.88);
   --frosted-border: #2a2630;
-  --paper-details-bg: #1c1920;
+  --paper-details-bg: #151318;
   --accent-color: #a78bfa;
   --error-color: #f87171;
   --error-bg: #280000;
@@ -553,12 +553,23 @@ form button[type="submit"]:active {
 }
 
 .responses-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: space-evenly;
+  display: block;
+  column-count: 3;
+  column-gap: 1.5rem;
   padding-top: 1rem;
   width: 100%;
+}
+
+@media (max-width: 1400px) {
+  .responses-container {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .responses-container {
+    column-count: 1;
+  }
 }
 
 .free-class {
@@ -572,8 +583,9 @@ form button[type="submit"]:active {
   justify-content: space-between;
   transition: all 0.3s ease;
   border: 1px solid var(--border-color);
-  flex-grow: 1;
-  width: 20%;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
 }
 
 .free-class:hover {
@@ -643,6 +655,8 @@ form button[type="submit"]:active {
   font-weight: 600;
   font-family: "JetBrains Mono", monospace;
   line-height: 1;
+  display: flex;
+  align-items: center;
 }
 
 .badge.subject {
@@ -670,25 +684,25 @@ form button[type="submit"]:active {
 }
 
 .badge.verified {
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #166534;
+  /* background: #dcfce7; */
+  color: #21914c;
+  /* border: 1px solid #166534; */
 }
 
 .dark-theme .badge.verified {
-  background: #092815;
-  color: #bbf7d0;
-  border: 1px solid #14532d;
+  /* background: #092815; */
+  color: #72d394;
+  /* border: 1px solid #14532d; */
 }
 
 .badge.flagged {
-  background: #fef2f2;
-  color: #dc2626;
+  /* background: #fef2f2; */
+  color: #c14040;
 }
 
 .dark-theme .badge.flagged {
-  background: #7f1d1d;
-  color: #fecaca;
+  /* background: #7f1d1d; */
+  color: #e55f5f;
 }
 
 .paper-details {
@@ -887,13 +901,11 @@ form button[type="submit"]:active {
   .free-class {
     width: 100% !important;
     padding: 1rem;
-    flex-grow: 0 !important;
   }
   
   .responses-container {
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: stretch !important;
+    column-count: 1 !important;
+    gap: 1rem !important;
   }
   
   .paper-header h3 {
@@ -941,17 +953,23 @@ form button[type="submit"]:active {
 
 @media (max-width: 480px) {
   .responses-container {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1rem !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
+    column-count: 1 !important;
   }
   
   .free-class {
     width: 100% !important;
-    flex: none !important;
     margin-bottom: 1rem;
+  }
+  
+  .paper-tile {
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .tile-actions a,
+  .tile-actions button {
+    flex: 1;
+    min-width: 0;
   }
   
   .main-container {
@@ -1176,12 +1194,12 @@ form button[type="submit"]:active {
 /* im so tired of this layout atp isko ab mai manually theek kar raha hu dont judge */
 @media (max-width: 1300px) {
   .free-class {
-    width: 30%;
+    width: 100%;
   }
 }
 @media (max-width: 1080px) {
   .free-class {
-    width: 40%;
+    width: 100%;
   }
 
 }
@@ -1844,4 +1862,88 @@ form button[type="submit"]:active {
     padding: 0.75rem;
     font-size: 0.8rem;
   }
+}
+
+/* Grouped Papers Styling */
+.grouped-paper-container {
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.grouped-paper-container .paper-header {
+  padding: 1.25rem 1.25rem 0.75rem 1.25rem;
+}
+
+.grouped-papers-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background-color: var(--paper-details-bg);
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 0.75rem 0.75rem;
+  overflow: hidden;
+}
+
+.paper-tile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--paper-details-bg);
+  transition: background-color 0.15s ease;
+}
+
+.paper-tile:last-child {
+  border-bottom: none;
+}
+
+.paper-tile:hover {
+  background-color: rgba(124, 92, 191, 0.03);
+}
+
+.dark-theme .paper-tile:hover {
+  background-color: rgba(167, 139, 250, 0.05);
+}
+
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.tile-content p {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.tile-content strong {
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.tile-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.tile-actions .view-button {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.75rem;
+  flex: none;
+  margin-bottom: 0;
+}
+
+.tile-actions .delete-button {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.75rem;
 }

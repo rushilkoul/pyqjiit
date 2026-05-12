@@ -73,7 +73,7 @@ export default function Onboarding({ isOpen, onComplete }) {
       <div className={`onboarding-modal ${isTransitioning ? 'slide-in' : ''}`}>
         <div className="onboarding-content">
           <div className="onboarding-header">
-            <h1>Welcome to <span className="brand-highlight">PYQJIIT</span></h1>
+            <h1>Welcome to <span className="brand-highlight">PYQJIIT</span>!</h1>
             <p>pick your year and branch</p>
           </div>
 

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../supabaseClient';
 import SUBJECTS_DATA from '../data/subjects.json';
+import { groupPapersByName } from '../utils/paperGrouping';
+import GroupedPapersList from './GroupedPapersList';
 
 const ALL_YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 const ALL_BRANCHES = ['ECE', 'CSEIT', 'BT', 'MNC', 'RAI'];
@@ -22,6 +24,7 @@ const ALL_SUBJECTS = getAllSubjects();
 export default function PapersList({ user, preferences, onResetPreferences }) {
   const [papers, setPapers] = useState([]);
   const [filteredPapers, setFilteredPapers] = useState([]);
+  const [groupedPapers, setGroupedPapers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState('');
@@ -32,6 +35,7 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
   const [studentNames, setStudentNames] = useState({});
   const [pillIndicator, setPillIndicator] = useState({ width: 0, left: 0 });
   const pillRefs = useRef([]);
+  const fetchedEnrollmentsRef = useRef(new Set());
 
   useEffect(() => {
     if (preferences) {
@@ -123,11 +127,19 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
   }, [selectedYear, selectedSemester, selectedBranch, selectedSubject]);
 
   useEffect(() => {
+    const grouped = groupPapersByName(filteredPapers);
+    setGroupedPapers(grouped);
+  }, [filteredPapers]);
+
+  useEffect(() => {
     if (papers.length > 0) {
       const uniqueEnrollments = [...new Set(papers.map(p => p.uploaded_by).filter(Boolean))];
       
       uniqueEnrollments.forEach(enrollment => {
-        getStudentName(enrollment);
+        if (!fetchedEnrollmentsRef.current.has(enrollment)) {
+          fetchedEnrollmentsRef.current.add(enrollment);
+          getStudentName(enrollment);
+        }
       });
     }
   }, [papers]);
@@ -172,32 +184,14 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
     }
   };
 
-  const handleDelete = async (id, ownerId) => {
-    if (!user) return alert('You must be logged in to delete papers.');
-    if (user.id !== ownerId) return alert('You can only delete your own papers.');
-    if (!window.confirm('Are you sure you want to delete this paper?')) return;
-
-    try {
-      const { error: deleteError } = await supabase
-        .from('papers')
-        .delete()
-        .eq('id', id);
-      if (deleteError) throw deleteError;
-      fetchPapers();
-    } catch (err) {
-      console.error('Error deleting paper:', err.message);
-      alert('Error deleting paper: ' + err.message);
-    }
-  };
-
   const getStudentName = async (id) => {
     let enrollmentNumber = id.replace("@mail.jiit.ac.in", "");
     
     // this is a private api. only works for AY2025-26 rn
     const response = await fetch(`https://jiitstudent.vercel.app/student/${enrollmentNumber}`);
     const data = await response.json();
-    
-    let name = data.data.name.toLowerCase().replace(/(^|\s)\w/g, match => match.toUpperCase());
+    let name;
+    data.success ? name = data.data.name.toLowerCase().replace(/(^|\s)\w/g, match => match.toUpperCase()) : '';
     
     if (data.success) {
       setStudentNames(prev => ({
@@ -237,76 +231,12 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
       ) : filteredPapers.length === 0 ? (
         <p>No papers match the selected filters{selectedYear && ` (Year: ${selectedYear})`}{selectedSubject && ` (Subject: ${selectedSubject})`}.</p>
       ) : (
-        <ul className="responses-container">
-          {filteredPapers.map((paper) => {
-            const { 
-              id, 
-              filename, 
-              file_key, 
-              subject,
-              year,
-              semester,
-              batch,
-              uploaded_by, 
-              uploaded_by_id,
-              verified,
-              flagged,
-              inserted_at,
-              branch
-            } = paper;
-            
-            const { data: publicUrlData } = supabase
-              .storage
-              .from('papers')
-              .getPublicUrl(file_key);
-
-            const uploadDate = new Date(inserted_at).toLocaleDateString();
-            const displayName = studentNames[uploaded_by] || uploaded_by;
-
-            return (
-              <li key={id} className="free-class">
-                <div className="paper-info">
-                  <div className="paper-header">
-                    <h3>{filename}</h3>
-                    <div className="paper-badges">
-                      {subject && <span className="badge subject">{subject}</span>}
-                      {verified && <span className="badge verified">✓ Verified</span>}
-                      {flagged && <span className="badge flagged">⚠ Flagged</span>}
-                      {branch && <span className="badge branch">{branch === '*' ? 'All Branches' : branch}</span>}
-                    </div>
-                  </div>
-                  
-                  <div className="paper-details">
-                    {year && semester && <p><strong>{year} - {semester}</strong></p>}
-                    {year && !semester && <p><strong>{year}</strong></p>}
-                    {batch && <p><strong>Batch(es):</strong> {batch}</p>}
-                    <p><strong>Uploaded:</strong> {uploadDate} by {displayName}</p>
-
-                  </div>
-                  
-                  <div className="paper-actions">
-                    <a
-                      href={publicUrlData.publicUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="view-button"
-                    >
-                      Open
-                    </a>
-                    {user && user.id === uploaded_by_id && (
-                      <button 
-                        onClick={() => handleDelete(id, uploaded_by_id)}
-                        className="delete-button"
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+        <GroupedPapersList 
+          paperGroups={groupedPapers}
+          user={user}
+          studentNames={studentNames}
+          onDelete={fetchPapers}
+        />
       )}
     </div>
     </>
