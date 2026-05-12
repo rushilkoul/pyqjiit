@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-const CURRENT_VERSION = 'v0.3.1';
+const CURRENT_VERSION = 'v0.4a';
 const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "PYQJIIT has had connectivity issues recently. This is due to a nationwide ISP block on the backend provider (Supabase) under Section 69A of the IT Act. Working on a fix, apologies for the inconvenience :(",
-  type: "alert"
+  message: "PYQJIIT, now with way less clutter. Enjoy a cleaner, more intuitive experience :D",
+  type: "feature"
 };
 
 export default function DeveloperMessage() {
