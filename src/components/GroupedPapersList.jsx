@@ -45,6 +45,11 @@ export default function GroupedPapersList({ paperGroups, user, studentNames, onD
                     .storage
                     .from('papers')
                     .getPublicUrl(paper.file_key);
+                  
+                  const proxyUrl = publicUrlData.publicUrl.replace(
+                      'https://wudlabccordzsyobylna.supabase.co/storage/v1/object/public/papers',
+                      'https://pyqjiit.rushilk.dev/papers'
+                  );
                     
 
                   const displayName = studentNames[paper.uploaded_by] || paper.uploaded_by;
@@ -65,7 +70,7 @@ export default function GroupedPapersList({ paperGroups, user, studentNames, onD
                         {paper.verified && <span className="badge verified">✓ Verified</span>}
                         {paper.flagged && (<span className="badge flagged">⚠ Flagged</span>)}
                         <a
-                          href={publicUrlData.publicUrl}
+                          href={proxyUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="view-button"
