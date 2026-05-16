@@ -103,7 +103,10 @@
         "Artificial Intelligence and Machine Learning Lab",
         "Theory and Applications of Linear Algebra",
         "Numerical Methods and Computation",
-        "Numerical Methods and Computation Lab"
+        "Numerical Methods and Computation Lab",
+
+        "Time Series Analysis and Forecasting",
+        "Fuzzy Sets, Logic and Applications"
       ]
     },
     "RAI": {
