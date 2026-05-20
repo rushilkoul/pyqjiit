@@ -190,7 +190,6 @@ export default function UploadForm({ user, isOpen, onClose }) {
 
       if (imageFiles.length > 0) {
         finalFile = await convertImagesToPDF(imageFiles);
-        finalFile.name = `${title.replace(/\s+/g, '-')}.pdf`;
       } else if (pdfFiles.length === 1) {
         finalFile = pdfFiles[0];
       } else {
@@ -198,7 +197,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
       }
 
       const timestamp = Date.now();
-      const cleanFileName = finalFile.name.replace(/[^a-zA-Z0-9.-]/g, '-');
+      const cleanFileName = finalFile.name = `${title.replace(/\s+/g, '-')}.pdf`;
       const filePath = `${cleanFileName}-${timestamp}`;
 
       const { data: authData, error: userError } = await supabase.auth.getUser();
