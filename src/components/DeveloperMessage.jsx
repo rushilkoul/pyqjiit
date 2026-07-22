@@ -5,8 +5,8 @@ const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "PYQJIIT, now with way less clutter. Enjoy a cleaner, more intuitive experience :D",
-  type: "feature"
+  message: "Welcome freshers! feel free to take a look around. This website exists because of the community's efforts, don't forget to eventually upload your own papers and help others out!",
+  // type: "feature"
 };
 
 export default function DeveloperMessage() {
