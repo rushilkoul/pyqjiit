@@ -197,8 +197,9 @@ export default function UploadForm({ user, isOpen, onClose }) {
       }
 
       const timestamp = Date.now();
-      const cleanFileName = finalFile.name = `${title.replace(/\s+/g, '-')}.pdf`;
-      const filePath = `${cleanFileName}-${timestamp}`;
+      // const cleanFileName = finalFile.name = `${title.replace(/\s+/g, '-')}.pdf`;
+      let finalFileName = `${title.replace(/\s+/g, '-')}.pdf`
+      const filePath = `${finalFileName}-${timestamp}`;
 
       const { data: authData, error: userError } = await supabase.auth.getUser();
       if (userError || !authData.user) throw new Error('User not authenticated');
