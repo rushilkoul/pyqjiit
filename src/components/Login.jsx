@@ -1,111 +1,64 @@
 import { useState } from 'react';
+import { FcGoogle } from 'react-icons/fc';
 import { supabase } from '../supabaseClient';
 import Modal from './Modal';
 
+// let us take a moment of silence for the enrollemnt magic link login method.
+// that code existed for 11 months straight, responsible for onboarding 92 users. 
+// (while failing for a lot of them which actually decreased public perception of pyqjiit but lmao)
+
+// rest easy, soldier. you did your job.
+
 export default function Login({ isOpen, onClose }) {
-  const [loading, setLoading] = useState(false);
-  const [enrollmentNumber, setEnrollmentNumber] = useState('');
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const validateEnrollmentNumber = (number) => {
-    const is10Digit = /^\d{10}$/.test(number);
-    const is12Digit = /^\d{12}$/.test(number);
-    return is10Digit || is12Digit;
-  };
-
-  const getSectorInfo = (number) => {
-    if (/^\d{10}$/.test(number)) {
-      return { sector: '✓ Sector 62', isValid: true };
-    } else if (/^\d{12}$/.test(number)) {
-      return { sector: '✓ Sector 128', isValid: true };
-    } else {
-      return { sector: '○ Invalid', isValid: false };
-    }
-  };
-
-  const handleEnrollmentChange = (e) => {
-    const value = e.target.value;
-    const digitsOnly = value.replace(/\D/g, '').slice(0, 12);
-    setEnrollmentNumber(digitsOnly);
-    
-    if (error) setError('');
-  };
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    
-    // Prevent double submission
-    if (loading) return;
-    
-    if (!validateEnrollmentNumber(enrollmentNumber)) {
-      setError('Enrollment number must be 10 digits (Sector 62) or 12 digits (Sector 128)');
-      return;
-    }
-    
-    setLoading(true);
+  
+  const handleGoogleLogin = async () => {
+    setGoogleLoading(true);
     setError('');
-    
-    const email = `${enrollmentNumber}@mail.jiit.ac.in`;
-    
     try {
-      const { error: authError } = await supabase.auth.signInWithOtp({ email });
+      const { error: authError } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          queryParams: {
+            hd: 'mail.jiit.ac.in',
+            prompt: 'select_account',
+          },
+          redirectTo: window.location.origin,
+        },
+      });
 
-      if (authError) {
-        if (authError.message.includes('rate limit')) {
-          setError('Too many attempts. Please wait a moment and try again.');
-        } else {
-          setError(`Failed to send magic link: ${authError.message}`);
-        }
-      } else {
-        setMagicLinkSent(true);
-      }
-    } catch (error) {
-      setError('Failed to send magic link. Please try again.');
+      if (authError) throw authError;
+    } catch (err) {
+      console.error('Error signing in with Google:', err);
+      setError(err.message || 'Failed to sign in with Google. Please try again.');
+      setGoogleLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="login-modal-content">
         <h1>Welcome to PYQJIIT!</h1>
-        <pre>Enter your <b>JIIT enrollment number.</b> A login link will be sent to your Gmail inbox.</pre>
-        <pre><b>Why?</b><br/>This prevents spam and insures only JIIT students can upload papers.</pre>
+        <p className="login-description">
+          Sign in with your JIIT Google account (<code>@mail.jiit.ac.in</code>) to upload question papers.
+        </p>
+        <p style={{ fontSize: '0.85rem', opacity: 0.75, lineHeight: 1.4, margin: '-0.25rem 0 0.5rem 0' }}>
+          <strong>Why?</strong> This prevents spam and ensures only verified JIIT students can contribute papers.
+        </p>
 
-        {magicLinkSent ? (
-          <p style={{opacity: 0.7}}>
-            A magic login link has been sent to your JIIT email:<br /><b>{enrollmentNumber}@mail.jiit.ac.in</b><br />Please check your inbox to sign in!
-          </p>
-        ) : (
-          <form onSubmit={handleLogin}>
-            <input
-              type="text"
-              placeholder="Enrollment Number (10 or 12 digits)"
-              value={enrollmentNumber}
-              onChange={handleEnrollmentChange}
-              disabled={loading}
-              maxLength={12}
-            />
-            {enrollmentNumber && (
-              <p style={{ 
-                fontSize: '0.9rem', 
-                marginTop: '0.25rem',
-                color: getSectorInfo(enrollmentNumber).isValid ? 'var(--success-color)' : 'var(--text-color)',
-                opacity: 0.8
-              }}>
-                {getSectorInfo(enrollmentNumber).sector}
-              </p>
-            )}
-            {error && <p className="error-message">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading || !validateEnrollmentNumber(enrollmentNumber)}
-            >
-              {loading ? 'Loading...' : 'Send Magic Link'}
-            </button>
-          </form>
-        )}
+        <button 
+          type="button"
+          onClick={handleGoogleLogin} 
+          disabled={googleLoading}
+          className="google-signin-btn"
+        >
+          <FcGoogle size={22} />
+          <span>{googleLoading ? 'Redirecting to Google...' : 'Continue with Google'}</span>
+        </button>
+
+        {error && <p className="error-message" style={{ marginTop: '0.75rem' }}>{error}</p>}
+      </div>
     </Modal>
   );
 }

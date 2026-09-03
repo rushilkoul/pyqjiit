@@ -100,15 +100,18 @@ export default function App() {
 
   return (
     <div className="main">
-      <Navbar user={user} onSignOut={handleSignOut} onNavigateHome={() => navigateTo('home', '/')} />
+      <Navbar 
+        user={user} 
+        onSignOut={handleSignOut} 
+        onNavigateHome={() => navigateTo('home', '/')} 
+      />
       <main className="main-content">
-      <button
-          onClick={handleUploadButtonClick}
-          className="upload-button"
-        >
-          {canUpload ? 'Upload Question Paper' : 'Sign in to Upload'}
-        </button>
-        <PapersList preferences={userPreferences} onResetPreferences={handleResetPreferences} />
+        <PapersList 
+          preferences={userPreferences} 
+          onResetPreferences={handleResetPreferences} 
+          canUpload={canUpload}
+          onUploadClick={handleUploadButtonClick}
+        />
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
         <UploadForm 
           isOpen={isUploadModalOpen} 
@@ -128,6 +131,7 @@ export default function App() {
       )}
       
       <DeveloperMessage />
+      
       <Onboarding 
         isOpen={showOnboarding} 
         onComplete={handleOnboardingComplete} 

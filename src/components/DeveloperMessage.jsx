@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { VscSparkle, VscRocket, VscBug, VscMegaphone, VscTerminal } from 'react-icons/vsc';
 
-const CURRENT_VERSION = 'v0.4a';
+const CURRENT_VERSION = 'v0.5a';
 const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "Welcome freshers! feel free to take a look around. This website exists because of the community's efforts, don't forget to eventually upload your own papers and help others out!",
-  // type: "feature"
+  message: "New update :D sign in instantly with your JIIT Google account, easily search for papers, and enjoy faster image uploads.",
+  type: "alert"
 };
 
 export default function DeveloperMessage() {
@@ -29,18 +30,18 @@ export default function DeveloperMessage() {
 
   const getIcon = (type) => {
     switch (type) {
-      case 'fix': return '🐛';
-      case 'feature': return '✨';
-      case 'update': return '📢';
-      case 'alert': return '⚠️';
-      default: return '💬';
+      case 'fix': return <VscBug size={16} />;
+      case 'feature': return <VscSparkle size={16} />;
+      case 'update': return <VscRocket size={16} />;
+      case 'alert': return <VscMegaphone size={16} />;
+      default: return <VscTerminal size={16} />;
     }
   };
 
   return (
     <div className="dev-message">
       <div className="dev-message-content">
-        <span className="dev-message-icon">{getIcon(MESSAGE_CONFIG.type)}</span>
+        <span className="dev-message-icon-nf">{getIcon(MESSAGE_CONFIG.type)}</span>
         <div className="dev-message-text">
           <small className="dev-message-version">{MESSAGE_CONFIG.version}</small>
           <p className="dev-message-body">{MESSAGE_CONFIG.message}</p>

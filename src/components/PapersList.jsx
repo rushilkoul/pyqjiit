@@ -22,7 +22,7 @@ const getAllSubjects = () => {
 
 const ALL_SUBJECTS = getAllSubjects();
 
-export default function PapersList({ user, preferences, onResetPreferences }) {
+export default function PapersList({ user, preferences, onResetPreferences, canUpload, onUploadClick }) {
   const [papers, setPapers] = useState([]);
   const [filteredPapers, setFilteredPapers] = useState([]);
   const [groupedPapers, setGroupedPapers] = useState([]);
@@ -264,6 +264,15 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
           </button>
         )}
       </div>
+
+      {onUploadClick && (
+        <button 
+          onClick={onUploadClick}
+          className="desktop-upload-btn"
+        >
+          {canUpload ? 'Upload Paper' : 'Sign In to Upload'}
+        </button>
+      )}
     </div>
 
     <div className="main-container">

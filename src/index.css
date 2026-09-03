@@ -271,25 +271,7 @@ button:focus {
   transform: rotate(20deg);
 }
 .upload-button {
-  background: var(--button-bg);
-  backdrop-filter: blur(10px);
-  color: var(--button-text);
-  border: 2px solid var(--border-color);
-  border: none; 
-  font-weight: 600;
-  padding: 1rem 1.75rem;
-  border-radius: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: fixed;
-  z-index: 999;
-
-  bottom: 2rem;
-  right: 2rem;
-}
-
-.upload-button:hover {
-  background: var(--button-hover);
+  display: none;
 }
 
 .modal-overlay {
@@ -341,7 +323,7 @@ button:focus {
 }
 
 .modal-content-inner {
-  min-height: 200px;
+  /* min-height: 200px; */
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -464,10 +446,6 @@ form button[type="submit"] {
   
   .upload-button {
     display: none !important;
-  }
-
-  .mobile-upload-button {
-    display: block !important;
   }
 
   .main-container {
@@ -1206,9 +1184,9 @@ form button[type="submit"]:active {
 
 .dev-message {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  max-width: 350px;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  max-width: 360px;
   z-index: 1000;
   animation: slideInUp 0.3s ease-out;
 }
@@ -1225,10 +1203,14 @@ form button[type="submit"]:active {
   gap: 0.75rem;
 }
 
-.dev-message-icon {
-  font-size: 1.25rem;
+.dev-message-icon-nf {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-color);
+  font-size: 1.15rem;
   flex-shrink: 0;
-  margin-top: 0.125rem;
+  margin-top: 0.1rem;
 }
 
 .dev-message-text {
@@ -1239,7 +1221,7 @@ form button[type="submit"]:active {
 .dev-message-version {
   display: block;
   font-size: 0.75rem;
-  font-family: 'JetBrains Mono', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   color: var(--text-color);
   opacity: 0.6;
   font-weight: 600;
@@ -1248,7 +1230,7 @@ form button[type="submit"]:active {
 }
 
 .dev-message-body {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.4;
   color: var(--text-color);
   margin: 0;
@@ -1257,7 +1239,7 @@ form button[type="submit"]:active {
 .dev-message-close {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: var(--text-color);
   cursor: pointer;
   opacity: 0.5;
@@ -1269,6 +1251,7 @@ form button[type="submit"]:active {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  line-height: 1;
 }
 
 .dev-message-close:hover {
@@ -1277,7 +1260,7 @@ form button[type="submit"]:active {
 
 @keyframes slideInUp {
   from {
-    transform: translateY(100px);
+    transform: translateY(60px);
     opacity: 0;
   }
   to {
@@ -1288,18 +1271,10 @@ form button[type="submit"]:active {
 
 @media (max-width: 768px) {
   .dev-message {
-    bottom: 0.5rem;
-    right: 0.5rem;
-    left: 0.5rem;
+    bottom: 5.5rem;
+    right: 1rem;
+    left: 1rem;
     max-width: none;
-  }
-  
-  .dev-message-content {
-    padding: 0.875rem;
-  }
-  
-  .dev-message-body {
-    font-size: 0.85rem;
   }
 }
 
@@ -1959,13 +1934,50 @@ form button[type="submit"]:active {
   max-width: 800px;
   margin: 0.5rem auto 1.5rem auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 0.75rem;
+}
+
+.desktop-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0 1.25rem;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.15s ease;
+  flex-shrink: 0;
+  height: 44px;
+  font-family: inherit;
+}
+
+.desktop-upload-btn:hover {
+  background: var(--button-hover);
+}
+
+.desktop-upload-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .desktop-upload-btn {
+    display: none !important;
+  }
+  .mobile-upload-button {
+    display: block !important;
+  }
 }
 
 .search-bar-container {
   position: relative;
-  width: 100%;
+  flex: 1;
   display: flex;
   align-items: center;
 }
@@ -2097,4 +2109,53 @@ form button[type="submit"]:active {
 .back-nav-btn:hover {
   background: var(--option-hover-bg);
   border-color: var(--hover-border-color);
+}
+
+.login-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-description {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  line-height: 1.5;
+  margin-bottom: 0.25rem;
+}
+
+.login-description code {
+  background: var(--paper-details-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.google-signin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+.google-signin-btn:hover {
+  background: var(--option-hover-bg);
+  border-color: var(--hover-border-color);
+}
+
+.google-signin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
