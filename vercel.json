@@ -6,6 +6,10 @@
     {
       "source": "/papers/:path*",
       "destination": "https://wudlabccordzsyobylna.supabase.co/storage/v1/object/public/papers/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
