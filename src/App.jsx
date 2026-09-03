@@ -6,8 +6,8 @@ import PapersList from './components/PapersList';
 import Navbar from './components/Navbar';
 import DeveloperMessage from './components/DeveloperMessage';
 import Onboarding from './components/Onboarding';
+import Privacy from './components/Privacy';
 
-const DEV_MODE = import.meta.env.DEV;
 const ONBOARDING_KEY = 'onboarding-completed-v1';
 const PREFERENCES_KEY = 'user-preferences-v1';
 
@@ -17,6 +17,17 @@ export default function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [userPreferences, setUserPreferences] = useState(null);
+  const [currentPage, setCurrentPage] = useState(
+    typeof window !== 'undefined' && window.location.pathname === '/privacy' ? 'privacy' : 'home'
+  );
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(window.location.pathname === '/privacy' ? 'privacy' : 'home');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   useEffect(() => {
     const isOnboardingCompleted = localStorage.getItem(ONBOARDING_KEY) === 'true';
@@ -58,25 +69,38 @@ export default function App() {
   };
 
   const handleResetPreferences = () => {
-    localStorage.removeItem(ONBOARDING_KEY);
-    localStorage.removeItem(PREFERENCES_KEY);
     setShowOnboarding(true);
-    setUserPreferences(null);
   };
 
   const handleUploadButtonClick = () => {
-    if (user || DEV_MODE) {
+    if (user) {
       setIsUploadModalOpen(true);
     } else {
       setIsLoginModalOpen(true);
     }
   };
 
-  const canUpload = user || DEV_MODE;
+  const navigateTo = (page, path) => {
+    window.history.pushState({}, '', path);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const canUpload = !!user;
+
+  if (currentPage === 'privacy') {
+    return (
+      <Privacy 
+        user={user} 
+        onSignOut={handleSignOut} 
+        onBack={() => navigateTo('home', '/')} 
+      />
+    );
+  }
 
   return (
     <div className="main">
-      <Navbar user={user} onSignOut={handleSignOut} />
+      <Navbar user={user} onSignOut={handleSignOut} onNavigateHome={() => navigateTo('home', '/')} />
       <main className="main-content">
       <button
           onClick={handleUploadButtonClick}
@@ -86,7 +110,12 @@ export default function App() {
         </button>
         <PapersList preferences={userPreferences} onResetPreferences={handleResetPreferences} />
         <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-        <UploadForm isOpen={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)} user={user} />
+        <UploadForm 
+          isOpen={isUploadModalOpen} 
+          onClose={() => setIsUploadModalOpen(false)} 
+          user={user} 
+          preferences={userPreferences} 
+        />
       </main>
       
       {!isUploadModalOpen && (
@@ -99,10 +128,24 @@ export default function App() {
       )}
       
       <DeveloperMessage />
-      <Onboarding isOpen={showOnboarding} onComplete={handleOnboardingComplete} />
+      <Onboarding 
+        isOpen={showOnboarding} 
+        onComplete={handleOnboardingComplete} 
+        onClose={userPreferences ? () => setShowOnboarding(false) : undefined}
+        initialPreferences={userPreferences}
+      />
       
       <footer className="footer">
-        <p>made with 💜 by rushil</p>
+        <p>
+          made with 💜 by rushil •{' '}
+          <a 
+            href="/privacy" 
+            onClick={(e) => { e.preventDefault(); navigateTo('privacy', '/privacy'); }}
+            style={{ color: 'inherit', opacity: 0.75, textDecoration: 'underline' }}
+          >
+            Privacy Policy
+          </a>
+        </p>
       </footer>
     </div>
   );

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { supabase } from '../supabaseClient';
 import jsPDF from 'jspdf';
 import SUBJECTS_BY_YEAR_SEMESTER from '../data/subjects.json';
-
 
 // TODO: Sector 128 branch prefixes
 const BRANCH_BY_PREFIX = {
@@ -40,7 +39,38 @@ const getBranchFromBatch = (batchValue) => {
   return '*';
 };
 
-export default function UploadForm({ user, isOpen, onClose }) {
+const compressImage = (dataUrl, maxWidth = 1600, maxHeight = 1600, quality = 0.8) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width, height } = img;
+      if (width > maxWidth || height > maxHeight) {
+        const ratio = Math.min(maxWidth / width, maxHeight / height);
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height);
+      resolve({
+        dataUrl: canvas.toDataURL('image/jpeg', quality),
+        width,
+        height
+      });
+    };
+    img.onerror = () => {
+      resolve({ dataUrl, width: 800, height: 1100 });
+    };
+    img.src = dataUrl;
+  });
+};
+
+export default function UploadForm({ user, isOpen, onClose, preferences }) {
   const [title, setTitle] = useState('');
   const [files, setFiles] = useState([]);
   const [year, setYear] = useState('');
@@ -53,6 +83,19 @@ export default function UploadForm({ user, isOpen, onClose }) {
   const [conversionProgress, setConversionProgress] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (isOpen && preferences) {
+      if (preferences.year) setYear(preferences.year);
+      if (preferences.semester) {
+        const semStr = preferences.semester.toString().startsWith('Semester')
+          ? preferences.semester
+          : `Semester ${preferences.semester}`;
+        setSemester(semStr);
+      }
+      if (preferences.branch) setBranch(preferences.branch);
+    }
+  }, [isOpen, preferences]);
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -119,7 +162,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
   };
 
   const convertImagesToPDF = async (imageFiles) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       setConverting(true);
       setConversionProgress('Preparing images...');
 
@@ -129,14 +172,15 @@ export default function UploadForm({ user, isOpen, onClose }) {
 
       imageFiles.forEach((file, index) => {
         const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            setConversionProgress(`Converting image ${index + 1} of ${totalImages} to PDF...`);
+        reader.onload = async (e) => {
+          try {
+            setConversionProgress(`Compressing image ${index + 1} of ${totalImages}...`);
+            const compressed = await compressImage(e.target.result);
 
+            setConversionProgress(`Converting image ${index + 1} of ${totalImages} to PDF...`);
             const pageWidth = pdf.internal.pageSize.getWidth();
             const pageHeight = pdf.internal.pageSize.getHeight();
-            const imgAspectRatio = img.width / img.height;
+            const imgAspectRatio = compressed.width / compressed.height;
             const pageAspectRatio = pageWidth / pageHeight;
 
             let imgWidth, imgHeight;
@@ -152,7 +196,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
             const y = (pageHeight - imgHeight) / 2;
 
             if (index > 0) pdf.addPage();
-            pdf.addImage(e.target.result, 'JPEG', x, y, imgWidth, imgHeight);
+            pdf.addImage(compressed.dataUrl, 'JPEG', x, y, imgWidth, imgHeight);
 
             loadedImages++;
             if (loadedImages === totalImages) {
@@ -162,10 +206,16 @@ export default function UploadForm({ user, isOpen, onClose }) {
                 setConverting(false);
                 setConversionProgress('');
                 resolve(pdfBlob);
-              }, 500);
+              }, 300);
             }
-          };
-          img.src = e.target.result;
+          } catch (err) {
+            setConverting(false);
+            reject(err);
+          }
+        };
+        reader.onerror = (err) => {
+          setConverting(false);
+          reject(err);
         };
         reader.readAsDataURL(file);
       });
@@ -291,7 +341,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
             <select
               value={year}
               onChange={handleYearChange}
-              disabled={uploading || converting || (year && semester && subject)}
+              disabled={uploading || converting}
             >
               <option value="">Select Year</option>
               <option value="1st Year">1st Year</option>
@@ -306,7 +356,7 @@ export default function UploadForm({ user, isOpen, onClose }) {
             <select
               value={semester}
               onChange={handleSemesterChange}
-              disabled={uploading || converting || !year || (semester && subject)}
+              disabled={uploading || converting || !year}
             >
               <option value="">
                 {year ? 'Select Semester' : 'Select Year first'}
@@ -319,10 +369,6 @@ export default function UploadForm({ user, isOpen, onClose }) {
             </select>
           </div>
         </div>
-        
-        {year && semester && subject && (
-          <p className="field-locked">Year and semester locked after subject selection</p>
-        )}
 
         
         <div className="form-row">

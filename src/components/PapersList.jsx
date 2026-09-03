@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import { supabase } from '../supabaseClient';
 import SUBJECTS_DATA from '../data/subjects.json';
 import { groupPapersByName } from '../utils/paperGrouping';
@@ -33,6 +34,7 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
   const [selectedSubject, setSelectedSubject] = useState('');
   const [availableSubjects, setAvailableSubjects] = useState([]);
   const [studentNames, setStudentNames] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
   const [pillIndicator, setPillIndicator] = useState({ width: 0, left: 0 });
   const pillRefs = useRef([]);
   const fetchedEnrollmentsRef = useRef(new Set());
@@ -79,8 +81,20 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
       filtered = filtered.filter(paper => paper.subject === selectedSubject);
     }
 
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(paper => {
+        const titleMatch = (paper.filename || '').toLowerCase().includes(q);
+        const subjectMatch = (paper.subject || '').toLowerCase().includes(q);
+        const batchMatch = (paper.batch || '').toLowerCase().includes(q);
+        const uploaderName = (studentNames[paper.uploaded_by] || paper.uploaded_by || '').toLowerCase();
+        const uploaderMatch = uploaderName.includes(q);
+        return titleMatch || subjectMatch || batchMatch || uploaderMatch;
+      });
+    }
+
     setFilteredPapers(filtered);
-  }, [papers, selectedYear, selectedSemester, selectedBranch, selectedSubject]);
+  }, [papers, selectedYear, selectedSemester, selectedBranch, selectedSubject, searchQuery, studentNames]);
 
   useEffect(() => {
     const yearData = selectedYear ? SUBJECTS_DATA[selectedYear] : null;
@@ -199,7 +213,12 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
         [id]: name
       }));
     } 
-  }
+  };
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setSelectedSubject('');
+  };
 
   if (loading) return <p>Loading papers...</p>;
   if (error) return <p className="error-message">Error: {error}</p>;
@@ -223,13 +242,48 @@ export default function PapersList({ user, preferences, onResetPreferences }) {
         )}
       </>
     )}
+
+    <div className="search-filter-section">
+      <div className="search-bar-container">
+        <FaSearch className="search-icon" />
+        <input 
+          type="text"
+          className="search-input"
+          placeholder="Search by subject, title, batch, uploader..."
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+        />
+        {searchQuery && (
+          <button 
+            type="button"
+            className="clear-search-btn" 
+            onClick={() => setSearchQuery('')}
+            aria-label="Clear search"
+          >
+            <FaTimes size={12} />
+          </button>
+        )}
+      </div>
+    </div>
+
     <div className="main-container">
       <h2>Available Papers <span className="filtered-papers-counter">{filteredPapers.length}</span></h2> 
       
       {papers.length === 0 ? (
         <p>No papers uploaded yet.</p>
       ) : filteredPapers.length === 0 ? (
-        <p>No papers match the selected filters{selectedYear && ` (Year: ${selectedYear})`}{selectedSubject && ` (Subject: ${selectedSubject})`}.</p>
+        <div className="empty-results-box">
+          <p>No papers match your search.</p>
+          {(searchQuery || selectedSubject) && (
+            <button
+              type="button"
+              className="clear-filters-btn"
+              onClick={handleClearFilters}
+            >
+              clear search
+            </button>
+          )}
+        </div>
       ) : (
         <GroupedPapersList 
           paperGroups={groupedPapers}

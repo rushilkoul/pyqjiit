@@ -3,11 +3,19 @@ import { FaGithub, FaSun, FaMoon, FaUser, FaChevronDown } from 'react-icons/fa';
 import { useTheme } from '../themecontext';
 // import logo from '../assets/templogo.png';
 
-function Navbar({ user, onSignOut }) {
+function Navbar({ user, onSignOut, onNavigateHome }) {
   const githubLink = "https://github.com/rushilkoul/pyqjiit";
   const { theme, toggleTheme } = useTheme();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
+
+  const handleBrandClick = () => {
+    if (onNavigateHome) {
+      onNavigateHome();
+    } else {
+      window.location.href = '/';
+    }
+  };
 
   const toggleUserMenu = () => {
     setUserMenuOpen(!userMenuOpen);
@@ -36,7 +44,7 @@ function Navbar({ user, onSignOut }) {
 
   return (
     <nav className="navbar">
-        <div className="navbar-brand">
+        <div className="navbar-brand" onClick={handleBrandClick} style={{ cursor: 'pointer' }}>
           {/* <img src={logo} alt="PYQJIIT Logo" className="navbar-logo" /> */}
           <div>
             <h1><span>PYQ</span>JIIT</h1> 

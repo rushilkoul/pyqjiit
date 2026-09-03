@@ -16,7 +16,7 @@ const getRomanNumeral = (num) => {
   return numerals[num] || '';
 };
 
-export default function Onboarding({ isOpen, onComplete }) {
+export default function Onboarding({ isOpen, onComplete, onClose, initialPreferences }) {
   const [selectedYear, setSelectedYear] = useState('');
   const [selectedSemester, setSelectedSemester] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
@@ -24,10 +24,15 @@ export default function Onboarding({ isOpen, onComplete }) {
 
   useEffect(() => {
     if (isOpen) {
+      if (initialPreferences) {
+        setSelectedYear(initialPreferences.year || '');
+        setSelectedSemester(initialPreferences.semester || '');
+        setSelectedBranch(initialPreferences.branch || '');
+      }
       const timer = setTimeout(() => setIsTransitioning(true), 10);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, initialPreferences]);
 
   const handleYearSelect = (year) => {
     setSelectedYear(year);
@@ -73,6 +78,16 @@ export default function Onboarding({ isOpen, onComplete }) {
       <div className={`onboarding-modal ${isTransitioning ? 'slide-in' : ''}`}>
         <div className="onboarding-content">
           <div className="onboarding-header">
+            {onClose && (
+              <button 
+                type="button" 
+                onClick={onClose} 
+                className="onboarding-close-btn"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            )}
             <h1>Welcome to <span className="brand-highlight">PYQJIIT</span>!</h1>
             <p>pick your year and branch</p>
           </div>
