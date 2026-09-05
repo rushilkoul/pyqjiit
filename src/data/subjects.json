@@ -28,29 +28,35 @@
   "2nd Year": {
     "ECE": {
       "Semester 3": [
-        "Economics",
         "Probability and Random Processes",
-        "Signals & Systems",
-        "Numerical Techniques",
+        "Electronic Devices and Circuits",
         "Electronic Devices",
-        "Electronic Devices Lab",
+        "Signals and Systems",
+        "Digital Circuit Design",
         "Digital Logic and Circuit Design",
+        "Numerical Techniques",
+        "Environmental Studies",
+        "Economics",
+        "Electronic Devices and Circuits Lab",
+        "Electronic Devices Lab",
+        "Signals and Systems Lab",
+        "Digital Circuit Design Lab",
         "Digital Logic and Circuit Design Lab"
       ],
       "Semester 4": [
+        "Analog and Digital Communication",
         "Analogue Electronics",
         "Digital Signal Processing",
-        "Analogue Electronics Lab",
         "Telecommunication Networks",
-        "Digital Signal Processing Lab",
-        "Analog and Digital Communication",
         "Analog and Digital Communication Lab",
+        "Analogue Electronics Lab",
+        "Digital Signal Processing Lab",
 
         "Fundamentals of Embedded Systems",
         "Introduction to Microfabrication Technology",
         "Introduction to Microfabrication Lab",
         "Introduction to VLSI Lifecycle",
-        "Micro Project-2",
+        "Introduction to VLSI Lifecycle Lab",
         "Analog Electronic Circuits",
         "Discrete Signal Processing",
         "Communication Engineering",
@@ -59,8 +65,8 @@
     },
     "CSEIT": {
       "Semester 3": [
-        "Data Structures",
         "Economics",
+        "Data Structures",
         "Data Structures Lab",
         "Theory of Computation",
         "Database Management Systems",
@@ -81,43 +87,105 @@
       ]
     },
     "BT": {
-      "Semester 3": [],
-      "Semester 4": []
+      "Semester 3": [
+        "Probability and Statistics",
+        "Biochemistry",
+        "Thermodynamics and Chemical Processes",
+        "Genetics and Developmental Biology",
+        "Biochemical Techniques Lab",
+        "Thermodynamics and Chemical Processes Lab",
+        "Genetics and Developmental Biology Lab",
+        "Economics",
+        "Environmental Studies"
+      ],
+      "Semester 4": [
+        "Molecular Biology",
+        "Introduction to Bioinformatics",
+        "Microbiology",
+        "Immunology",
+        "Microbiology Lab",
+        "Bioinformatics Lab",
+        "Immunology Lab"
+      ]
     },
     "MNC": {
       "Semester 3": [
         "Data Structures",
+        "Database Management Systems",
         "Database Systems and Web",
-        "Economics",
-        "Data Structures Lab",
-        "Database Systems and Web Lab",
-        "Object Oriented Programming using Java",
-        "Mathematical Foundations of Probability and Statistics",
+        "Discrete Mathematics and its Applications",
         "Discrete Mathematical Structures",
-        "Environmental Studies"
+        "Introduction of Probability and Statistics",
+        "Mathematical Foundations of Probability and Statistics",
+        "Economics",
+        "Environmental Studies",
+        "Data Structures Lab",
+        "Database Management Systems Lab",
+        "Database Systems and Web Lab",
+        "Object Oriented Programming using Java"
       ],
       "Semester 4": [
         "Design and Analysis of Algorithms",
         "Artificial Intelligence and Machine Learning",
-        "Design and Analysis of Algorithms Lab",
-        "Artificial Intelligence and Machine Learning Lab",
         "Theory and Applications of Linear Algebra",
         "Numerical Methods and Computation",
+        "Numerical Methods in Scientific Computing",
+        "Environmental Studies",
+        "Design and Analysis of Algorithms Lab",
+        "Artificial Intelligence and Machine Learning Lab",
         "Numerical Methods and Computation Lab",
+        "Numerical Methods in Scientific Computing Lab",
 
         "Time Series Analysis and Forecasting",
         "Fuzzy Sets, Logic and Applications"
       ]
     },
     "RAI": {
-      "Semester 3": [],
-      "Semester 4": []
+      "Semester 3": [
+        "Probability and Random Processes",
+        "Analog & Digital Electronics",
+        "Fundamentals of Robotics & AI",
+        "Signals and Systems",
+        "Environmental Studies",
+        "Analog & Digital Electronics Lab",
+        "Robot Programming Lab",
+        "Signals and Systems Lab",
+        "Fundamental of Mechanical Engineering",
+        "Economics"
+      ],
+      "Semester 4": [
+        "Machine Learning for Robotics",
+        "Sensors and Actuators for Robotics",
+        "Microcontrollers and Its Applications",
+        "Theory of Machines and Machine Design",
+        "Sensors and Actuators Lab",
+        "Microcontrollers & Its Applications Lab"
+      ]
     }
   },
   "3rd Year": {
     "ECE": {
-      "Semester 5": [],
-      "Semester 6": []
+      "Semester 5": [
+        "Data Structures and Algorithms Design",
+        "Electromagnetic Field Theory",
+        "Semiconductor Materials Synthesis and Characterization",
+        "Control Systems",
+        "Microcontrollers and Computer Architecture",
+        "Data Structures and Algorithms Design Lab",
+        "Electromagnetic Field Theory Lab",
+        "Microcontrollers and Computer Architecture Lab",
+        "Indian Constitution & Traditional Knowledge"
+      ],
+      "Semester 6": [
+        "Advance Wireless Technologies",
+        "Introduction to IOT and Embedded Systems",
+        "Digital CMOS VLSI Design",
+        "Essentials of VLSI Testing",
+        "Embedded Systems/IOT Lab",
+        "VLSI Design Lab-II",
+        "VLSI Verification and Testing Lab",
+        "Soft Skill For Employability"
+      ]
     },
     "CSEIT": {
       "Semester 5": [
@@ -153,19 +221,50 @@
       ]
     },
     "BT": {
-      "Semester 5": [],
-      "Semester 6": []
+      "Semester 5": [
+        "Genetic Engineering",
+        "Bioprocess Engineering",
+        "AI-Driven Biotechnology and Cloud Computing",
+        "Genetic Engineering Lab",
+        "Industrial Biotechnology Lab-I",
+        "Indian Constitution & Traditional Knowledge",
+
+        "Biocompliance and Safety Standards",
+        "Environmental Law: Science, Policy and Practice",
+        "Food Process Engineering",
+        "Molecular Oncology"
+      ],
+      "Semester 6": [
+        "Biocomputing and Applications",
+        "Cell Culture Technology",
+        "Food and Agribiotechnology",
+        "Biocomputing and AI Lab",
+        "Cell Culture Lab",
+        "Soft Skills for Employability",
+
+        "Bioeconomics",
+        "Genetic Disorders and Personalized Medicine",
+        "Instrumentation Techniques in Biotechnology",
+        "Antimicrobial Resistance",
+        "Biopharmaceutics and Pharmacokinetics",
+        "Biorisk and Biosecurity",
+        "Scientific Writing and Communication",
+        "Introduction to Immunoinformatics",
+        "Waste to Energy: Technologies for Circular Economy"
+      ]
     },
     "MNC": {
       "Semester 5": [
         "Operating Systems",
-        "Operating Systems Lab",
-        "Full Stack Development Lab",
+        "Computer Networks",
         "Real and Complex Analysis",
         "Statistical Computing using R",
-        "Indian Constitution and Traditional Knowledge",
         "Number Theory & Cryptography with Applications",
         "Optimization Methods & Applications",
+        "Operating Systems Lab",
+        "Computer Networks Lab",
+        "Full Stack Development Lab",
+        "Indian Constitution and Traditional Knowledge",
 
         "Fundamentals of Image Processing and Computer Vision",
         "Fundamentals of Image Processing and Computer Vision Lab",
@@ -177,13 +276,36 @@
         "Fundamentals of Blockchain Technology Lab",
         "Fundamentals of Sensor Technology & Android Programming",
         "Fundamentals of Sensor Technology & Android Programming Lab"
-        
       ],
-      "Semester 6": []
+      "Semester 6": [
+        "Web Technology",
+        "Statistical Methods and Applications",
+        "Theory of Computation",
+        "Web Technology Lab",
+        "Statistical Methods and Applications Lab",
+        "Soft Skill for Employability"
+      ]
     },
     "RAI": {
-      "Semester 5": [],
-      "Semester 6": []
+      "Semester 5": [
+        "Applied Data Structures and Algorithms for AI and Robotics",
+        "Control Systems",
+        "Applied Data Structures and Algorithms Lab",
+        "Control Systems Lab",
+        "Advances in Robotics and Artificial Intelligence",
+        "Kinematics and Dynamics of Robots",
+        "Robotic Simulation Laboratory",
+        "AI for Robotics Applications Lab",
+        "Indian Constitution & Traditional Knowledge"
+      ],
+      "Semester 6": [
+        "Embedded Systems Design",
+        "Data Science for Robotics and AI",
+        "Robot Operating Systems Lab",
+        "Image Processing & Computer Vision",
+        "Robots Safety & Maintenance",
+        "Embedded and IoT Systems for Robotics Lab"
+      ]
     }
   },
   "4th Year": {
@@ -192,18 +314,27 @@
       "Semester 8": []
     },
     "CSEIT": {
-      "Semester 7": [
-        "Major Project Part - 1 (CSE)",
-        "Summer Training & Viva"
-      ],
-      "Semester 8": [
-        "Major Project Part - 2 (CSE)",
-        "Internship & Seminar"
-      ]
-    },
-    "BT": {
       "Semester 7": [],
       "Semester 8": []
+    },
+    "BT": {
+      "Semester 7": [
+        "Stem Cells and Healthcare",
+        "Biostatistics and Its Applications",
+        "Enzymes in Food Processing",
+        "Bioenergy and Biofuels",
+        "Biocomputing and Applications",
+        "Molecular Diagnostics",
+        "Networks of Life",
+        "Healthcare Marketplace",
+        "Stress: Biology, Behaviour and Management"
+      ],
+      "Semester 8": [
+        "Radiation Biology and Technological Applications",
+        "IPR & Bioethics",
+        "Human Nutrition & Health",
+        "Market Research in Biosciences"
+      ]
     },
     "MNC": {
       "Semester 7": [],
