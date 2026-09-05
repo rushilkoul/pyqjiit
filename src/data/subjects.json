@@ -48,9 +48,12 @@
         "Analogue Electronics",
         "Digital Signal Processing",
         "Telecommunication Networks",
+        "Theory and Applications of Linear Algebra",
         "Analog and Digital Communication Lab",
         "Analogue Electronics Lab",
         "Digital Signal Processing Lab",
+        "Telecommunication Networks Lab",
+        "Applied Mathematical Computational Lab",
 
         "Fundamentals of Embedded Systems",
         "Introduction to Microfabrication Technology",
@@ -111,7 +114,6 @@
     "MNC": {
       "Semester 3": [
         "Data Structures",
-        "Database Management Systems",
         "Database Systems and Web",
         "Discrete Mathematics and its Applications",
         "Discrete Mathematical Structures",
@@ -167,20 +169,28 @@
     "ECE": {
       "Semester 5": [
         "Data Structures and Algorithms Design",
+        "Wireless and Mobile Communications",
         "Electromagnetic Field Theory",
         "Semiconductor Materials Synthesis and Characterization",
         "Control Systems",
         "Microcontrollers and Computer Architecture",
         "Data Structures and Algorithms Design Lab",
+        "Wireless and Mobile Communications Lab",
         "Electromagnetic Field Theory Lab",
         "Microcontrollers and Computer Architecture Lab",
-        "Indian Constitution & Traditional Knowledge"
+        "Digital Structure and Design",
+        "Indian Constitution & Traditional Knowledge",
+
+        "Linear Control Systems",
+        "Next Generation Wireless Technologies"
       ],
       "Semester 6": [
         "Advance Wireless Technologies",
         "Introduction to IOT and Embedded Systems",
+        "Machine Learning Applications for Wireless Communications",
         "Digital CMOS VLSI Design",
         "Essentials of VLSI Testing",
+        "Advance Wireless Technologies Lab",
         "Embedded Systems/IOT Lab",
         "VLSI Design Lab-II",
         "VLSI Verification and Testing Lab",
@@ -194,6 +204,7 @@
         "Object Oriented Analysis and Design Using JAVA",
         "Computer Organization and Architecture",
         "Computer Organization and Architecture Lab",
+        "Operating Systems",
         "Operating System and System Programming Lab",
         "Open Source Software Lab",
         "Information Security Lab",
