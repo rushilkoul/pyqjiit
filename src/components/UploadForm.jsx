@@ -3,6 +3,7 @@ import Modal from './Modal';
 import { supabase } from '../supabaseClient';
 import jsPDF from 'jspdf';
 import SUBJECTS_BY_YEAR_SEMESTER from '../data/subjects.json';
+import { getBranchesForSubject } from '../utils/subjectHelper';
 
 // TODO: Sector 128 branch prefixes
 const BRANCH_BY_PREFIX = {
@@ -417,6 +418,13 @@ export default function UploadForm({ user, isOpen, onClose, preferences }) {
               </option>
             ))}
           </select>
+          {subject && (() => {
+            const branches = getBranchesForSubject(year, semester, subject);
+            if (branches.length > 1 && !branches.includes('*')) {
+              return <small className="branch-hint">Shared across: {branches.join(', ')}</small>;
+            }
+            return null;
+          })()}
         </div>
 
         <div>

@@ -3,6 +3,7 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 import { supabase } from '../supabaseClient';
 import SUBJECTS_DATA from '../data/subjects.json';
 import { groupPapersByName } from '../utils/paperGrouping';
+import { isPaperMatchingBranch } from '../utils/subjectHelper';
 import GroupedPapersList from './GroupedPapersList';
 
 const ALL_YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
@@ -74,7 +75,7 @@ export default function PapersList({ user, preferences, onResetPreferences, canU
     }
 
     if (selectedBranch) {
-      filtered = filtered.filter(paper => paper.branch === selectedBranch || paper.branch === '*');
+      filtered = filtered.filter(paper => isPaperMatchingBranch(paper, selectedBranch));
     }
 
     if (selectedSubject) {

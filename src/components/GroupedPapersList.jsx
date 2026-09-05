@@ -1,5 +1,6 @@
 import React from 'react';
 import { supabase } from '../supabaseClient';
+import { getBranchesForSubject } from '../utils/subjectHelper';
 
 export default function GroupedPapersList({ paperGroups, user, studentNames, onDelete }) {
   const handleDelete = async (paperId, ownerId) => {
@@ -20,6 +21,16 @@ export default function GroupedPapersList({ paperGroups, user, studentNames, onD
     }
   };
 
+  const getBranchBadgeText = (group) => {
+    if (group.year === '1st Year' || group.branch === '*') return 'All Branches';
+    const branches = getBranchesForSubject(group.year, group.semester, group.subject);
+    if (branches.length > 0) {
+      if (branches.includes('*') || branches.length >= 4) return 'All Branches';
+      return branches.join(', ');
+    }
+    return group.branch || 'All Branches';
+  };
+
   return (
     <ul className="responses-container">
       {paperGroups.map((group) => {
@@ -30,7 +41,7 @@ export default function GroupedPapersList({ paperGroups, user, studentNames, onD
                 <h3>{group.displayName}</h3>
                 <div className="paper-badges">
                   {group.subject && <span className="badge subject">{group.subject}</span>}
-                  {group.branch && <span className="badge branch">{group.branch === '*' ? 'All Branches' : group.branch}</span>}
+                  <span className="badge branch">{getBranchBadgeText(group)}</span>
                 </div>
               </div>
 
