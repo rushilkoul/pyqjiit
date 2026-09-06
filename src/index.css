@@ -280,42 +280,48 @@ button:focus {
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   z-index: 1000;
-  padding-top: 10%;
+  padding: 1.5rem;
+  overflow-y: auto;
 }
 .modal-content {
   background: var(--bg-color);
   backdrop-filter: blur(10px);
-  padding: 2rem;
-  padding-top: 3.5rem;
+  padding: 1.5rem;
   border-radius: 1rem;
-  max-width: 500px;
+  max-width: 520px;
   width: 90%;
-  max-height: 90%;
+  max-height: 88vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   color: var(--text-color);
   position: relative;
   box-shadow: 0 10px 25px var(--box-shadow-color);
   border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-go-back {
   position: absolute;
   top: 1rem;
-  left: 1rem;
+  right: 1rem;
+  left: auto;
   background: none;
   color: var(--text-color);
   opacity: 0.7;
   border: none;
-  padding: 0;
+  padding: 0.25rem;
   cursor: pointer;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.9rem;
-  transition: opacity 0.2s ease;
+  font-size: 1.25rem;
+  transition: opacity 0.2s ease, transform 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  z-index: 50;
 }
 
 .modal-go-back:hover {
@@ -323,16 +329,16 @@ button:focus {
 }
 
 .modal-content-inner {
-  /* min-height: 200px; */
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.75rem;
   flex: 1;
+  min-height: 0;
 }
 form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
 form div {
@@ -341,7 +347,8 @@ form div {
 
 form label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-color);
 }
@@ -351,7 +358,7 @@ form input[type="file"],
 form input[type="email"],
 form select {
   width: 100%;
-  padding: 0.65rem;
+  padding: 0.55rem 0.65rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   transition: all 0.2s ease;
@@ -369,7 +376,7 @@ form select {
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 1rem;
-  padding-right: 2.5rem;
+  padding-right: 2.25rem;
 }
 
 form select:hover {
@@ -392,7 +399,7 @@ form input[type="email"] {
 form input[type="text"] {
   font-family: 'JetBrains Mono', monospace;
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
 }
 
 form input[type="text"]:focus,
@@ -408,30 +415,27 @@ form button[type="submit"] {
   background-color: var(--button-bg);
   color: var(--button-text);
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.65rem 1.25rem;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: background-color 0.2s ease;
 }
 
 .form-row {
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   width: 100%;
 }
 
 .form-field {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
 }
 
 @media (max-width: 920px) {
-  .form-row {
-    flex-direction: column;
-    gap: 1rem;
-  }
   .navbar-actions {
     gap: .25rem;
     flex-grow: 0;
@@ -914,14 +918,18 @@ form button[type="submit"]:active {
     margin: 0;
     border-radius: 0;
     max-height: none;
-    padding: 0.75rem;
-    padding-top: 3rem;
+    padding: 1rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
   }
   
   .modal-go-back {
-    top: 0.5rem;
-    left: 0.5rem;
-    font-size: 0.8rem;
+    top: 0.75rem;
+    right: 0.75rem;
+    left: auto;
+    font-size: 1.15rem;
+    z-index: 50;
   }
 
   .modal-content-inner {
@@ -1839,6 +1847,53 @@ form button[type="submit"]:active {
   }
 }
 
+.academic-year-sections-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.academic-year-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.academic-year-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  margin: 1rem 0 0.25rem 0;
+  width: 100%;
+}
+
+.academic-year-divider::before,
+.academic-year-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-color);
+  opacity: 0.8;
+}
+
+.academic-year-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.85rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
 /* Grouped Papers Styling */
 .grouped-paper-container {
   padding: 0 !important;
@@ -2158,4 +2213,776 @@ form button[type="submit"]:active {
 .google-signin-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (min-width: 921px) {
+  .modal-content.modal-content-large {
+    max-width: 780px;
+    width: 95%;
+    transition: max-width 0.25s ease;
+  }
+}
+
+.upload-form-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.upload-form-view h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
+.upload-files-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.upload-file-trigger-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--card-bg);
+  border: 1.5px dashed var(--hover-border-color);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-file-trigger-card:hover {
+  border-color: var(--accent-color);
+  background: var(--option-hover-bg);
+  transform: translateY(-1px);
+}
+
+.upload-file-trigger-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: var(--border-color);
+  background: var(--paper-details-bg);
+}
+
+.upload-file-trigger-card.disabled:hover {
+  border-color: var(--border-color);
+  background: var(--paper-details-bg);
+  transform: none;
+}
+
+.upload-file-trigger-card.disabled .upload-trigger-btn {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.input-needs-attention {
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.22) !important;
+  animation: softPulse 0.35s ease;
+}
+
+@keyframes softPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+  100% { transform: scale(1); }
+}
+
+.upload-file-trigger-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: var(--paper-details-bg);
+  color: var(--accent-color);
+  flex-shrink: 0;
+}
+
+.upload-file-trigger-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+}
+
+.upload-file-trigger-text strong {
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.upload-file-trigger-text span {
+  font-size: 0.8rem;
+  opacity: 0.75;
+  line-height: 1.3;
+}
+
+.upload-trigger-btn {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.upload-trigger-btn:hover {
+  background: var(--button-hover);
+}
+
+.upload-files-summary-card {
+  background: var(--paper-details-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.upload-files-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.upload-files-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.upload-files-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-reorder-link {
+  background: var(--card-bg);
+  color: var(--accent-color);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-reorder-link:hover {
+  border-color: var(--accent-color);
+  background: var(--option-hover-bg);
+}
+
+.btn-clear-link {
+  background: transparent;
+  color: var(--error-color);
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.btn-clear-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.upload-thumbnails-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding: 0.35rem 0.2rem;
+  cursor: pointer;
+}
+
+.mini-thumbnail-item {
+  position: relative;
+  width: 52px;
+  height: 68px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.mini-thumbnail-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mini-page-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.2;
+}
+
+.mini-thumbnail-add {
+  width: 52px;
+  height: 68px;
+  border-radius: 6px;
+  border: 1.5px dashed var(--hover-border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.mini-thumbnail-add:hover {
+  opacity: 1;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+.pdf-summary-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.25rem;
+}
+
+.pdf-icon-accent {
+  color: var(--error-color);
+}
+
+.pdf-summary-text {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.pdf-filename {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.pdf-filesize {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.submit-paper-btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.submit-paper-btn:disabled,
+form button[type="submit"]:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  pointer-events: none;
+  box-shadow: none;
+}
+
+.file-manager-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.file-manager-topbar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.back-to-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  width: fit-content;
+  font-family: inherit;
+  transition: opacity 0.2s ease;
+}
+
+.back-to-details-btn:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.file-manager-header-text h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 0.2rem;
+}
+
+.file-manager-header-text p {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  line-height: 1.4;
+}
+
+.file-manager-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 0.25rem;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.action-btn-add {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+}
+
+.action-btn-add:hover {
+  border-color: var(--hover-border-color);
+  background: var(--option-hover-bg);
+}
+
+.action-btn-clear {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--error-color);
+}
+
+.action-btn-clear:hover {
+  background: var(--error-bg);
+  border-color: var(--error-color);
+}
+
+.file-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed var(--hover-border-color);
+  border-radius: 12px;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-drop-zone:hover,
+.file-drop-zone.dragging {
+  border-color: var(--accent-color);
+  background: var(--option-hover-bg);
+  transform: scale(1.005);
+}
+
+.drop-zone-icon {
+  color: var(--accent-color);
+  opacity: 0.85;
+}
+
+.file-drop-zone h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.file-drop-zone p {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.drop-zone-browse-btn {
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+
+.file-manager-pdf-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-icon-large {
+  color: var(--error-color);
+  flex-shrink: 0;
+}
+
+.pdf-card-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pdf-card-details h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.pdf-card-details p {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.pdf-card-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pdf-action-btn {
+  background: var(--paper-details-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.pdf-action-btn:hover {
+  background: var(--option-hover-bg);
+  border-color: var(--hover-border-color);
+}
+
+.pdf-action-btn.btn-danger {
+  color: var(--error-color);
+}
+
+.pdf-action-btn.btn-danger:hover {
+  background: var(--error-bg);
+  border-color: var(--error-color);
+}
+.page-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
+  gap: 0.75rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  padding: 0.35rem 0.2rem;
+  flex: 1;
+  min-height: 0;
+}
+
+.page-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  height: 220px;
+  min-height: 220px;
+}
+
+.page-card:hover {
+  border-color: var(--hover-border-color);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.page-card:active {
+  cursor: grabbing;
+}
+.page-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.6rem;
+  background: var(--paper-details-bg);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.page-number-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-color);
+}
+
+.page-card-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.page-ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+}
+
+.page-ctrl-btn:hover:not(:disabled) {
+  background: var(--button-bg);
+  color: var(--button-text);
+}
+
+.page-ctrl-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-ctrl-btn.delete-page-btn:hover {
+  background: var(--error-color);
+  border-color: var(--error-color);
+  color: white;
+}
+
+.page-card-preview {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f2f7;
+  overflow: hidden;
+  padding: 0.25rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.dark-theme .page-card-preview {
+  background: #121016;
+}
+
+.page-card-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.page-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.7rem;
+  opacity: 0.8;
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--card-bg);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.page-filename {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 65%;
+}
+
+.page-filesize {
+  flex-shrink: 0;
+}
+
+.add-more-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 220px;
+  min-height: 220px;
+  border: 2px dashed var(--hover-border-color);
+  border-radius: 10px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  opacity: 0.75;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.add-more-card:hover {
+  opacity: 1;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  background: var(--option-hover-bg);
+}
+
+
+
+
+
+
+.file-manager-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.file-manager-count-summary {
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-color);
+}
+
+.confirm-pages-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.confirm-pages-btn:hover {
+  background: var(--button-hover);
+}
+
+@media (max-width: 920px) {
+  .file-manager-view {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .page-cards-grid {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: max-content;
+    align-content: start;
+    align-items: start;
+    gap: 0.6rem;
+    flex: 1;
+    min-height: 0;
+  }
+  
+  .page-card {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  .page-card-preview {
+    height: 115px;
+    min-height: 0;
+  }
+  
+  .add-more-card {
+    height: 180px;
+    min-height: 180px;
+  }
 }

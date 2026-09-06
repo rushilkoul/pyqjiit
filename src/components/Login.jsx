@@ -37,7 +37,7 @@ export default function Login({ isOpen, onClose }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} closeOnBackdropClick={true}>
       <div className="login-modal-content">
         <h1>Welcome to PYQJIIT!</h1>
         <p className="login-description">

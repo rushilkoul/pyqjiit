@@ -72,8 +72,10 @@ export default function App() {
     setShowOnboarding(true);
   };
 
+  const canUpload = import.meta.env.DEV || !!user;
+
   const handleUploadButtonClick = () => {
-    if (user) {
+    if (canUpload) {
       setIsUploadModalOpen(true);
     } else {
       setIsLoginModalOpen(true);
@@ -85,8 +87,6 @@ export default function App() {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
-  const canUpload = !!user;
 
   if (currentPage === 'privacy') {
     return (
@@ -112,11 +112,13 @@ export default function App() {
           canUpload={canUpload}
           onUploadClick={handleUploadButtonClick}
         />
-        <Login isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+        <Login 
+          isOpen={isLoginModalOpen} 
+          onClose={() => setIsLoginModalOpen(false)} 
+        />
         <UploadForm 
           isOpen={isUploadModalOpen} 
           onClose={() => setIsUploadModalOpen(false)} 
-          user={user} 
           preferences={userPreferences} 
         />
       </main>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { FiX } from 'react-icons/fi';
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year'];
 const BRANCHES = ['ECE', 'CSEIT', 'BT', 'MNC', 'RAI'];
@@ -85,7 +86,7 @@ export default function Onboarding({ isOpen, onComplete, onClose, initialPrefere
                 className="onboarding-close-btn"
                 aria-label="Close"
               >
-                ✕
+                <FiX size={18} />
               </button>
             )}
             <h1>Welcome to <span className="brand-highlight">PYQJIIT</span>!</h1>

@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { VscSparkle, VscRocket, VscBug, VscMegaphone, VscTerminal } from 'react-icons/vsc';
 
-const CURRENT_VERSION = 'v0.5a';
+const CURRENT_VERSION = 'v0.9a';
 const STORAGE_KEY = `dev-message-dismissed-${CURRENT_VERSION}`;
 
 const MESSAGE_CONFIG = {
   version: CURRENT_VERSION,
-  message: "New update :D sign in instantly with your JIIT Google account, easily search for papers, and enjoy faster image uploads.",
+  message: "Fixes to uploading! You can now preview and reorder pages you upload.",
   type: "alert"
 };
 
