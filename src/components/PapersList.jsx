@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { FaSearch, FaTimes } from 'react-icons/fa';
 import { supabase } from '../supabaseClient';
 import SUBJECTS_DATA from '../data/subjects.json';
-import { groupPapersByName } from '../utils/paperGrouping';
+import { groupPapersByAcademicYear } from '../utils/paperGrouping';
 import { isPaperMatchingBranch } from '../utils/subjectHelper';
 import GroupedPapersList from './GroupedPapersList';
 
@@ -26,7 +26,7 @@ const ALL_SUBJECTS = getAllSubjects();
 export default function PapersList({ user, preferences, onResetPreferences, canUpload, onUploadClick }) {
   const [papers, setPapers] = useState([]);
   const [filteredPapers, setFilteredPapers] = useState([]);
-  const [groupedPapers, setGroupedPapers] = useState([]);
+  const [academicYearGroups, setAcademicYearGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedYear, setSelectedYear] = useState('');
@@ -142,8 +142,8 @@ export default function PapersList({ user, preferences, onResetPreferences, canU
   }, [selectedYear, selectedSemester, selectedBranch, selectedSubject]);
 
   useEffect(() => {
-    const grouped = groupPapersByName(filteredPapers);
-    setGroupedPapers(grouped);
+    const ayGroups = groupPapersByAcademicYear(filteredPapers);
+    setAcademicYearGroups(ayGroups);
   }, [filteredPapers]);
 
   useEffect(() => {
@@ -189,8 +189,15 @@ export default function PapersList({ user, preferences, onResetPreferences, canU
         .select('*')
         .order('inserted_at', { ascending: false });
       if (fetchError) throw fetchError;
-      setPapers(data);
-      setFilteredPapers(data);
+      
+      const sortedData = (data || []).sort((a, b) => {
+        const timeA = new Date(a.order_at || a.inserted_at).getTime();
+        const timeB = new Date(b.order_at || b.inserted_at).getTime();
+        return timeB - timeA;
+      });
+
+      setPapers(sortedData);
+      setFilteredPapers(sortedData);
     } catch (err) {
       console.error('Error fetching papers:', err.message);
       setError(err.message);
@@ -296,7 +303,7 @@ export default function PapersList({ user, preferences, onResetPreferences, canU
         </div>
       ) : (
         <GroupedPapersList 
-          paperGroups={groupedPapers}
+          academicYearGroups={academicYearGroups}
           user={user}
           studentNames={studentNames}
           onDelete={fetchPapers}

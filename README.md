@@ -43,8 +43,9 @@ CREATE TABLE IF NOT EXISTS public.papers (
   uploaded_by_id uuid NOT NULL,
   verified boolean DEFAULT false,
   flagged boolean DEFAULT false,
-  branch text,
+  branch text DEFAULT '*'::text,
   inserted_at timestamptz DEFAULT now(),
+  order_at timestamptz DEFAULT now(),
   semester text,
   CONSTRAINT check_valid_semester CHECK (
     semester IS NULL OR semester IN (
@@ -77,7 +78,7 @@ USING (true);
 ```
 
 Also make and configure your `papers` bucket.
-> The deployed version has a 2MB cap on upload.
+> The deployed version at `pyqjiit.rushilk.dev` has a 10MB cap on upload.
 
 ## Deploying
 The project is configured for deployment on Vercel with the included `vercel.json`:

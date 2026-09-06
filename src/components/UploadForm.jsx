@@ -445,6 +445,7 @@ export default function UploadForm({ isOpen, onClose, preferences }) {
 
         if (uploadError) throw uploadError;
 
+        const nowIso = new Date().toISOString();
         const { error: insertError } = await supabase
           .from('papers')
           .insert([{
@@ -457,6 +458,8 @@ export default function UploadForm({ isOpen, onClose, preferences }) {
             batch: batch.trim() || 'All',
             branch: branch || null,
             subject: subject.trim(),
+            inserted_at: nowIso,
+            order_at: nowIso,
           }]);
 
         if (insertError) throw insertError;
